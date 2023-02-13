@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotificaDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.dto</a> &gt; <span class="el_source">NotificaDto.java</span></div><h1>NotificaDto.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.glucoseguardian.webbackend.storage.entity.Notifica;
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.regex.Pattern;
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+/**
+ * Rappresenta il dto dell'entita notifica.
+ */
+@JsonInclude(Include.NON_ABSENT)
+public class NotificaDto extends RisultatoDto implements Serializable {
+
+  private Long id;
+  private String pazienteOggetto;
+  private String pazienteDestinatario;
+  private String tutoreDestinatario;
+  private String adminDestinatario;
+  private String dottoreDestinatario;
+  private String messaggio;
+  private String data;
+  private String time;
+  private Integer stato;
+
+  /**
+   * Costruttore con tutti i campi.
+   */
+  public NotificaDto(Long id, String pazienteOggetto, String pazienteDestinatario,
+      String tutoreDestinatario, String adminDestinatario, String dottoreDestinatario,
+<span class="nc" id="L36">      String messaggio, String data, String time, Integer stato) {</span>
+<span class="nc" id="L37">    this.id = id;</span>
+<span class="nc" id="L38">    this.pazienteOggetto = pazienteOggetto;</span>
+<span class="nc" id="L39">    this.pazienteDestinatario = pazienteDestinatario;</span>
+<span class="nc" id="L40">    this.tutoreDestinatario = tutoreDestinatario;</span>
+<span class="nc" id="L41">    this.adminDestinatario = adminDestinatario;</span>
+<span class="nc" id="L42">    this.dottoreDestinatario = dottoreDestinatario;</span>
+<span class="nc" id="L43">    this.messaggio = messaggio;</span>
+<span class="nc" id="L44">    this.data = data;</span>
+<span class="nc" id="L45">    this.time = time;</span>
+<span class="nc" id="L46">    this.stato = stato;</span>
+<span class="nc" id="L47">  }</span>
+
+<span class="fc" id="L49">  public NotificaDto() {</span>
+<span class="fc" id="L50">  }</span>
+
+  /**
+   * Costruttore per l'input.
+   */
+<span class="fc" id="L55">  public NotificaDto(Long id) {</span>
+<span class="fc" id="L56">    this.id = id;</span>
+<span class="fc" id="L57">  }</span>
+
+  /**
+   * Costruttore con tutti i campi tranne i destinatari.
+   */
+  public NotificaDto(Long id, String pazienteOggetto, String messaggio, String data, String time,
+<span class="nc" id="L63">      Integer stato) {</span>
+<span class="nc" id="L64">    this.id = id;</span>
+<span class="nc" id="L65">    this.pazienteOggetto = pazienteOggetto;</span>
+<span class="nc" id="L66">    this.messaggio = messaggio;</span>
+<span class="nc" id="L67">    this.data = data;</span>
+<span class="nc" id="L68">    this.time = time;</span>
+<span class="nc" id="L69">    this.stato = stato;</span>
+<span class="nc" id="L70">  }</span>
+
+  /**
+   * Costruisce un {@link NotificaDto} a partire da un {@link Notifica}.
+   */
+  public static NotificaDto valueOf(Notifica notifica) {
+<span class="fc" id="L76">    NotificaDto notificaDto = new NotificaDto();</span>
+<span class="fc" id="L77">    notificaDto.setId(notifica.getId());</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">    if (notifica.getPazienteOggetto() != null) {</span>
+<span class="fc" id="L79">      notificaDto.setPazienteOggetto(notifica.getPazienteOggetto().getCodiceFiscale());</span>
+    }
+<span class="fc bfc" id="L81" title="All 2 branches covered.">    if (notifica.getPazienteDestinatario() != null) {</span>
+<span class="fc" id="L82">      notificaDto.setPazienteDestinatario(notifica.getPazienteDestinatario().getCodiceFiscale());</span>
+    }
+<span class="fc bfc" id="L84" title="All 2 branches covered.">    if (notifica.getTutoreDestinatario() != null) {</span>
+<span class="fc" id="L85">      notificaDto.setTutoreDestinatario(notifica.getTutoreDestinatario().getCodiceFiscale());</span>
+    }
+<span class="fc bfc" id="L87" title="All 2 branches covered.">    if (notifica.getAdminDestinatario() != null) {</span>
+<span class="fc" id="L88">      notificaDto.setAdminDestinatario(notifica.getAdminDestinatario().getCodiceFiscale());</span>
+    }
+<span class="fc bfc" id="L90" title="All 2 branches covered.">    if (notifica.getDottoreDestinatario() != null) {</span>
+<span class="fc" id="L91">      notificaDto.setDottoreDestinatario(notifica.getDottoreDestinatario().getCodiceFiscale());</span>
+    }
+<span class="fc" id="L93">    DateFormat dateFormat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L94">    String dataNotificaDto = dateFormat.format(notifica.getData());</span>
+<span class="fc" id="L95">    SimpleDateFormat sdf = new SimpleDateFormat(&quot;HH:mm:ss&quot;);</span>
+<span class="fc" id="L96">    String timeString = sdf.format(notifica.getOra());</span>
+<span class="fc" id="L97">    notificaDto.setMessaggio(notifica.getMessaggio());</span>
+<span class="fc" id="L98">    notificaDto.setData(dataNotificaDto);</span>
+<span class="fc" id="L99">    notificaDto.setTime(timeString);</span>
+<span class="fc" id="L100">    notificaDto.setStato(notifica.getStato());</span>
+<span class="fc" id="L101">    return notificaDto;</span>
+  }
+
+  public Long getId() {
+<span class="fc" id="L105">    return id;</span>
+  }
+
+  public void setId(Long id) {
+<span class="fc" id="L109">    this.id = id;</span>
+<span class="fc" id="L110">  }</span>
+
+  public String getPazienteOggetto() {
+<span class="fc" id="L113">    return pazienteOggetto;</span>
+  }
+
+  public void setPazienteOggetto(String pazienteOggetto) {
+<span class="fc" id="L117">    this.pazienteOggetto = pazienteOggetto;</span>
+<span class="fc" id="L118">  }</span>
+
+  public String getPazienteDestinatario() {
+<span class="fc" id="L121">    return pazienteDestinatario;</span>
+  }
+
+  public void setPazienteDestinatario(String pazienteDestinatario) {
+<span class="fc" id="L125">    this.pazienteDestinatario = pazienteDestinatario;</span>
+<span class="fc" id="L126">  }</span>
+
+  public String getTutoreDestinatario() {
+<span class="fc" id="L129">    return tutoreDestinatario;</span>
+  }
+
+  public void setTutoreDestinatario(String tutoreDestinatario) {
+<span class="fc" id="L133">    this.tutoreDestinatario = tutoreDestinatario;</span>
+<span class="fc" id="L134">  }</span>
+
+  public String getAdminDestinatario() {
+<span class="fc" id="L137">    return adminDestinatario;</span>
+  }
+
+  public void setAdminDestinatario(String adminDestinatario) {
+<span class="fc" id="L141">    this.adminDestinatario = adminDestinatario;</span>
+<span class="fc" id="L142">  }</span>
+
+  public String getDottoreDestinatario() {
+<span class="fc" id="L145">    return dottoreDestinatario;</span>
+  }
+
+  public void setDottoreDestinatario(String dottoreDestinatario) {
+<span class="fc" id="L149">    this.dottoreDestinatario = dottoreDestinatario;</span>
+<span class="fc" id="L150">  }</span>
+
+  public String getMessaggio() {
+<span class="fc" id="L153">    return messaggio;</span>
+  }
+
+  public void setMessaggio(String messaggio) {
+<span class="fc" id="L157">    this.messaggio = messaggio;</span>
+<span class="fc" id="L158">  }</span>
+
+  public String getData() {
+<span class="fc" id="L161">    return data;</span>
+  }
+
+  public void setData(String data) {
+<span class="fc" id="L165">    this.data = data;</span>
+<span class="fc" id="L166">  }</span>
+
+  public String getTime() {
+<span class="fc" id="L169">    return time;</span>
+  }
+
+  public void setTime(String time) {
+<span class="fc" id="L173">    this.time = time;</span>
+<span class="fc" id="L174">  }</span>
+
+  public Integer getStato() {
+<span class="fc" id="L177">    return stato;</span>
+  }
+
+  public void setStato(Integer stato) {
+<span class="fc" id="L181">    this.stato = stato;</span>
+<span class="fc" id="L182">  }</span>
+
+  public void validateStato() throws IllegalArgumentException {
+<span class="fc" id="L185">    Validate.notNull(stato, &quot;Lo stato del messaggio non può essere assente&quot;);</span>
+<span class="pc bpc" id="L186" title="1 of 4 branches missed.">    Validate.isTrue(stato &gt;= 0 &amp;&amp; stato &lt;= 4, &quot;Lo stato del messaggio non è valido&quot;);</span>
+<span class="fc" id="L187">  }</span>
+
+  public void validateId() throws IllegalArgumentException {
+<span class="fc" id="L190">    Validate.notNull(id, &quot;L'id del messaggio non può essere assente&quot;);</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">    Validate.isTrue(id &gt;= 0, &quot;L'id del messaggio non è valido&quot;);</span>
+<span class="fc" id="L192">  }</span>
+
+  /**
+   *  validazione della notifica.
+   */
+  public void validateNotifica() throws IllegalArgumentException {
+<span class="fc" id="L198">    Validate.notNull(messaggio, &quot;il messaggio della notifica non può essere assente&quot;);</span>
+<span class="fc bfc" id="L199" title="All 4 branches covered.">    Validate.isTrue(messaggio.length() &lt;= 1024 &amp;&amp; messaggio.length() &gt;= 1,</span>
+        &quot;il messaggio della notifica è di lunghezza errata&quot;);
+<span class="fc bfc" id="L201" title="All 2 branches covered.">    if (pazienteOggetto != null) {</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">      Validate.isTrue(pazienteOggetto.length() == 16,</span>
+          &quot;la lunghezza del codice fiscale deve essere 16 caratteri&quot;);
+    }
+<span class="fc bfc" id="L205" title="All 2 branches covered.">    if (pazienteDestinatario != null) {</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">      Validate.isTrue(pazienteDestinatario.length() == 16,</span>
+          &quot;il codice fiscale è di lunghezza errata&quot;);
+    }
+<span class="fc bfc" id="L209" title="All 2 branches covered.">    if (tutoreDestinatario != null) {</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">      Validate.isTrue(tutoreDestinatario.length() == 16, &quot;il codice fiscale è di lunghezza errata&quot;);</span>
+    }
+<span class="fc bfc" id="L212" title="All 2 branches covered.">    if (adminDestinatario != null) {</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">      Validate.isTrue(adminDestinatario.length() == 16, &quot;il codice fiscale è di lunghezza errata&quot;);</span>
+    }
+<span class="fc bfc" id="L215" title="All 2 branches covered.">    if (dottoreDestinatario != null) {</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">      Validate.isTrue(dottoreDestinatario.length() == 16,</span>
+          &quot;il codice fiscale è di lunghezza errata&quot;);
+    }
+<span class="pc bpc" id="L219" title="3 of 8 branches missed.">    if (pazienteDestinatario == null &amp;&amp; tutoreDestinatario == null &amp;&amp; adminDestinatario == null</span>
+        &amp;&amp; dottoreDestinatario == null) {
+<span class="fc" id="L221">      throw new IllegalArgumentException(&quot;Tutti i destinatari sono vuoti&quot;);</span>
+    }
+<span class="fc" id="L223">  }</span>
+
+  @Override
+  public boolean equals(Object o) {
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L228">      return true;</span>
+    }
+
+<span class="pc bpc" id="L231" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L232">      return false;</span>
+    }
+
+<span class="fc" id="L235">    NotificaDto that = (NotificaDto) o;</span>
+
+<span class="fc" id="L237">    return new EqualsBuilder().append(id, that.id).append(pazienteOggetto, that.pazienteOggetto)</span>
+<span class="fc" id="L238">        .append(pazienteDestinatario, that.pazienteDestinatario)</span>
+<span class="fc" id="L239">        .append(tutoreDestinatario, that.tutoreDestinatario)</span>
+<span class="fc" id="L240">        .append(adminDestinatario, that.adminDestinatario)</span>
+<span class="fc" id="L241">        .append(dottoreDestinatario, that.dottoreDestinatario).append(messaggio, that.messaggio)</span>
+<span class="fc" id="L242">        .append(data, that.data).append(time, that.time).append(stato, that.stato).isEquals();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

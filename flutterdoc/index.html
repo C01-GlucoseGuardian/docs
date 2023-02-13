@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 6.1.5">
+  <meta name="description" content="glucose_guardian API docs, for the Dart programming language.">
+  <title>glucose_guardian - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">glucose_guardian package</li>
+  </ol>
+  <div class="self-name">glucose_guardian</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span class="material-symbols-outlined">
+        brightness_4
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <p><a href="https://codemagic.io/apps/63d7f375d43a04b2091796b1/63d7f375d43a04b2091796b0/latest_build"><img src="https://api.codemagic.io/apps/63d7f375d43a04b2091796b1/63d7f375d43a04b2091796b0/status_badge.svg" alt="Codemagic build status"></a></p>
+<h1 id="glucose-guardian">Glucose Guardian</h1>
+<h4 id="introduzione">Introduzione</h4>
+<p>L'applicazione della piattaforma "Glucose Guardian" mira a dare un'interfaccia semplice e pulita alla stessa, essa sarà disponibile per Pazienti e Tutori.</p>
+<h3 id="installazione-play-store">Installazione (Play store)</h3>
+<p>E' possibile scaricare sul proprio dispositivo l'applicaione dal play store, una volta installata essa sarà usabile al 100%</p>
+<h3 id="installazione-compilazione">Installazione (Compilazione)</h3>
+<p>Per compilare l'applicazione per Android è necessario avere installato i tool di compilazione di base e l'sdk di Android.
+Successivamente bisognerà installare flutter seguendo le indicazioni sul <a href="https://docs.flutter.dev/get-started/install">sito ufficiale</a>
+A quel punto bisognerà eseguire il tool di code generation con <code>flutter packages pub run build_runner build</code></p>
+<p>Per compilare l'applicazione in modalità release bisognerà generare un keystore con il comando:
+<code>keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000</code></p>
+<p>A questo punto rinominare il file <code>android/key.properties.example</code> in <code>android/key.properties</code> e cambiare i parametri al suo interno per fare riferimento al keystore appena generato.</p>
+<p>Per compilare un apk per android in modalità debug sarà necessario eseguire il comando:
+<code>flutter build apk</code>
+Invece per compilarlo in modalità release(solo dopo aver creato e impostato il keystore) sarà necessario eseguire:
+<code>flutter build apk --release</code>
+L'apk compilato sarà disponibile al percorso indicato da flutter dopo la corretta esecuzione di uno dei comandi sopra, a quel punto sarà possibile spostarlo sul telefono e installarlo come un normale apk.</p>
+<h3 id="manuale-duso-paziente">Manuale d'uso (Paziente)</h3>
+<p>Una volta installata l'applicazione e avviata ci si troverà di fronte ad una introduzione di 3 pagine, cliccando sul bottone "Avanti" in basso a destra sarà possibile proseguire nell'introduzione, una volta completata ci si troverà di fronte alla pagina di login, fatto il login si arriverà alla home.
+Per prima cosa bisognerà collegare un dispositivo cgm usando l'icona in alto a destra, che aprirà una schermata che cercherà un dispositivo, una volta trovato sarà necessario cliccarci sopra e attendere la connessione.</p>
+<p>Nella pagina principale saranno mostrate le misurazioni dei livelli di glucosio del giorno corrente, usando la barra superiore sarà possibile muoversi all'interno delle misurazioni dell'ultima settimana giorno per giorno.</p>
+<p>E' possibile muoversi all'interno delle schermate usando la barra inferiore, la prima schermata (home) è quella di cui scritto precedentemente, la seconda invece rappresenterà l'agenda ossia la lista dei farmaci da prendere, poi vi sarà la schermata delle notifiche, il profilo dottore e il profilo del paziente.</p>
+<h5 id="agenda">Agenda</h5>
+<p>Qui è mostrata la terapia attuale, per segnare un farmaco come assunto bisognerà fare un swipe verso sinistra sulla card del farmaco e poi cliccare sull'icona che comparirà.
+In alto a destra sarà disponibile il tasto "Invia feedback terapia" che consentirà di interagire con il proprio dottore inviando un feedback sulla terapia in corso.</p>
+<h5 id="notifiche">Notifiche</h5>
+<p>Qui sono mostrate le notifiche "salvavita", è possibile segnare una notifica come letta facendo uno swipe verso sinistra sulla card della notifica e poi cliccando sull'icona che comparirà.</p>
+<h5 id="profilo-dottore">Profilo Dottore</h5>
+<p>Qui sono mostrati i dati di riepilogo del dottore, con il bottone invia feedback terapia in basso a sinistra.</p>
+<h5 id="profilo-paziente">Profilo Paziente</h5>
+<p>Qui è mostrato un riepilogo dei dati del paziente, con un bottone per effettuare il logout.</p>
+<h4 id="schermata-invio-feedback-terapia">Schermata Invio feedback terapia</h4>
+<p>In questa schermata saranno presenti 4 input box in cui rispondere a delle domande poste, queste domande saranno inviate al proprio dottore tramite il bottone sottostante "INVIA"</p>
+<h3 id="manuale-duso-tutore">Manuale d'uso (Tutore)</h3>
+<p>Una volta installata l'applicazione e avviata ci si troverà di fronte ad una introduzione di 3 pagine, cliccando sul bottone "Avanti" in basso a destra sarà possibile proseguire nell'introduzione, una volta completata ci si troverà di fronte alla pagina di login, fatto il login si arriverà alla home.</p>
+<p>Qui sarà disponibile la lista dei pazienti assistiti, cliccando su uno di essi si accederà ai suoi dati personali (vedasi manuale d'uso paziente, è tutto uguale, tranne che le sue notifiche non saranno ovviamente mostrate).</p>
+<p>In alto a destra ci sarà un icona che porterà alla schermata delle notifiche del tutore, è possibile segnare una notifica come letta facendo uno swipe verso sinistra sulla card della notifica e poi cliccando sull'icona che comparirà.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="agenda_bloc">
+  <span class="name"><a href="bloc_agenda_agenda_bloc/bloc_agenda_agenda_bloc-library.html">agenda_bloc</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="api">
+  <span class="name"><a href="constants_api/constants_api-library.html">api</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="api_exception">
+  <span class="name"><a href="services_exceptions_api_exception/services_exceptions_api_exception-library.html">api_exception</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="api_mixin">
+  <span class="name"><a href="services_api_mixin/services_api_mixin-library.html">api_mixin</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="api_provider">
+  <span class="name"><a href="services_api_provider/services_api_provider-library.html">api_provider</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="api_repository">
+  <span class="name"><a href="services_api_repository/services_api_repository-library.html">api_repository</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="assets">
+  <span class="name"><a href="constants_assets/constants_assets-library.html">assets</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="assunzione_farmaco">
+  <span class="name"><a href="models_assunzione_farmaco/models_assunzione_farmaco-library.html">assunzione_farmaco</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="auth">
+  <span class="name"><a href="models_auth/models_auth-library.html">auth</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="auth_bloc">
+  <span class="name"><a href="bloc_auth_auth_bloc/bloc_auth_auth_bloc-library.html">auth_bloc</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="cgm_connect">
+  <span class="name"><a href="screens_cgm_connect/screens_cgm_connect-library.html">cgm_connect</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="change_password">
+  <span class="name"><a href="screens_change_password/screens_change_password-library.html">change_password</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="colors">
+  <span class="name"><a href="constants_colors/constants_colors-library.html">colors</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="common">
+  <span class="name"><a href="bloc_common/bloc_common-library.html">common</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="dates">
+  <span class="name"><a href="constants_dates/constants_dates-library.html">dates</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="day_selector">
+  <span class="name"><a href="components_day_selector/components_day_selector-library.html">day_selector</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="db">
+  <span class="name"><a href="constants_db/constants_db-library.html">db</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="doctor_bloc">
+  <span class="name"><a href="bloc_doctor_doctor_bloc/bloc_doctor_doctor_bloc-library.html">doctor_bloc</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="dottore">
+  <span class="name"><a href="models_dottore/models_dottore-library.html">dottore</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="empty_data">
+  <span class="name"><a href="components_empty_data/components_empty_data-library.html">empty_data</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="error_screen">
+  <span class="name"><a href="components_error_screen/components_error_screen-library.html">error_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="farmaco">
+  <span class="name"><a href="models_farmaco/models_farmaco-library.html">farmaco</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="feedback">
+  <span class="name"><a href="models_feedback/models_feedback-library.html">feedback</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="firebase">
+  <span class="name"><a href="services_firebase/services_firebase-library.html">firebase</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="firebase_options">
+  <span class="name"><a href="firebase_options/firebase_options-library.html">firebase_options</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="general">
+  <span class="name"><a href="constants_general/constants_general-library.html">general</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="glicemia">
+  <span class="name"><a href="models_glicemia/models_glicemia-library.html">glicemia</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="glucose_chart">
+  <span class="name"><a href="components_glucose_chart/components_glucose_chart-library.html">glucose_chart</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="hive_assunzione_farmaco_service">
+  <span class="name"><a href="services_db_hive_assunzione_farmaco_service/services_db_hive_assunzione_farmaco_service-library.html">hive_assunzione_farmaco_service</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="landing">
+  <span class="name"><a href="screens_landing/screens_landing-library.html">landing</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="loading">
+  <span class="name"><a href="components_loading/components_loading-library.html">loading</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="login">
+  <span class="name"><a href="screens_login/screens_login-library.html">login</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="main">
+  <span class="name"><a href="main/main-library.html">main</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="measurements_bloc">
+  <span class="name"><a href="bloc_measurements_measurements_bloc/bloc_measurements_measurements_bloc-library.html">measurements_bloc</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="notifica">
+  <span class="name"><a href="models_notifica/models_notifica-library.html">notifica</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="notifications_bloc">
+  <span class="name"><a href="bloc_notifications_notifications_bloc/bloc_notifications_notifications_bloc-library.html">notifications_bloc</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="numero_utile">
+  <span class="name"><a href="models_numero_utile/models_numero_utile-library.html">numero_utile</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="patient_bloc">
+  <span class="name"><a href="bloc_patient_patient_bloc/bloc_patient_patient_bloc-library.html">patient_bloc</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="paziente">
+  <span class="name"><a href="models_paziente/models_paziente-library.html">paziente</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="paziente_agenda">
+  <span class="name"><a href="screens_paziente_agenda/screens_paziente_agenda-library.html">paziente_agenda</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="paziente_doctor_screen">
+  <span class="name"><a href="screens_paziente_doctor_screen/screens_paziente_doctor_screen-library.html">paziente_doctor_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="paziente_home">
+  <span class="name"><a href="screens_paziente_home/screens_paziente_home-library.html">paziente_home</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="paziente_notifiche">
+  <span class="name"><a href="screens_paziente_notifiche/screens_paziente_notifiche-library.html">paziente_notifiche</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="paziente_profilo">
+  <span class="name"><a href="screens_paziente_profilo/screens_paziente_profilo-library.html">paziente_profilo</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="paziente_send_feedback">
+  <span class="name"><a href="screens_paziente_send_feedback/screens_paziente_send_feedback-library.html">paziente_send_feedback</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="shared_preferences_service">
+  <span class="name"><a href="services_shared_preferences_service/services_shared_preferences_service-library.html">shared_preferences_service</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="strings">
+  <span class="name"><a href="constants_strings/constants_strings-library.html">strings</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="terapia">
+  <span class="name"><a href="models_terapia/models_terapia-library.html">terapia</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="time_of_day_adapter">
+  <span class="name"><a href="services_db_time_of_day_adapter/services_db_time_of_day_adapter-library.html">time_of_day_adapter</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="tutore">
+  <span class="name"><a href="models_tutore/models_tutore-library.html">tutore</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="tutore_bloc">
+  <span class="name"><a href="bloc_tutore_tutore_bloc/bloc_tutore_tutore_bloc-library.html">tutore_bloc</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="tutore_home">
+  <span class="name"><a href="screens_tutore_home/screens_tutore_home-library.html">tutore_home</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="tutore_paziente_details">
+  <span class="name"><a href="screens_tutore_paziente_details/screens_tutore_paziente_details-library.html">tutore_paziente_details</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li class="self-crumb">glucose_guardian package</li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">glucose_guardian</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="bloc_agenda_agenda_bloc/bloc_agenda_agenda_bloc-library.html">agenda_bloc</a></li>
+      <li><a href="constants_api/constants_api-library.html">api</a></li>
+      <li><a href="services_exceptions_api_exception/services_exceptions_api_exception-library.html">api_exception</a></li>
+      <li><a href="services_api_mixin/services_api_mixin-library.html">api_mixin</a></li>
+      <li><a href="services_api_provider/services_api_provider-library.html">api_provider</a></li>
+      <li><a href="services_api_repository/services_api_repository-library.html">api_repository</a></li>
+      <li><a href="constants_assets/constants_assets-library.html">assets</a></li>
+      <li><a href="models_assunzione_farmaco/models_assunzione_farmaco-library.html">assunzione_farmaco</a></li>
+      <li><a href="models_auth/models_auth-library.html">auth</a></li>
+      <li><a href="bloc_auth_auth_bloc/bloc_auth_auth_bloc-library.html">auth_bloc</a></li>
+      <li><a href="screens_cgm_connect/screens_cgm_connect-library.html">cgm_connect</a></li>
+      <li><a href="screens_change_password/screens_change_password-library.html">change_password</a></li>
+      <li><a href="constants_colors/constants_colors-library.html">colors</a></li>
+      <li><a href="bloc_common/bloc_common-library.html">common</a></li>
+      <li><a href="constants_dates/constants_dates-library.html">dates</a></li>
+      <li><a href="components_day_selector/components_day_selector-library.html">day_selector</a></li>
+      <li><a href="constants_db/constants_db-library.html">db</a></li>
+      <li><a href="bloc_doctor_doctor_bloc/bloc_doctor_doctor_bloc-library.html">doctor_bloc</a></li>
+      <li><a href="models_dottore/models_dottore-library.html">dottore</a></li>
+      <li><a href="components_empty_data/components_empty_data-library.html">empty_data</a></li>
+      <li><a href="components_error_screen/components_error_screen-library.html">error_screen</a></li>
+      <li><a href="models_farmaco/models_farmaco-library.html">farmaco</a></li>
+      <li><a href="models_feedback/models_feedback-library.html">feedback</a></li>
+      <li><a href="services_firebase/services_firebase-library.html">firebase</a></li>
+      <li><a href="firebase_options/firebase_options-library.html">firebase_options</a></li>
+      <li><a href="constants_general/constants_general-library.html">general</a></li>
+      <li><a href="models_glicemia/models_glicemia-library.html">glicemia</a></li>
+      <li><a href="components_glucose_chart/components_glucose_chart-library.html">glucose_chart</a></li>
+      <li><a href="services_db_hive_assunzione_farmaco_service/services_db_hive_assunzione_farmaco_service-library.html">hive_assunzione_farmaco_service</a></li>
+      <li><a href="screens_landing/screens_landing-library.html">landing</a></li>
+      <li><a href="components_loading/components_loading-library.html">loading</a></li>
+      <li><a href="screens_login/screens_login-library.html">login</a></li>
+      <li><a href="main/main-library.html">main</a></li>
+      <li><a href="bloc_measurements_measurements_bloc/bloc_measurements_measurements_bloc-library.html">measurements_bloc</a></li>
+      <li><a href="models_notifica/models_notifica-library.html">notifica</a></li>
+      <li><a href="bloc_notifications_notifications_bloc/bloc_notifications_notifications_bloc-library.html">notifications_bloc</a></li>
+      <li><a href="models_numero_utile/models_numero_utile-library.html">numero_utile</a></li>
+      <li><a href="bloc_patient_patient_bloc/bloc_patient_patient_bloc-library.html">patient_bloc</a></li>
+      <li><a href="models_paziente/models_paziente-library.html">paziente</a></li>
+      <li><a href="screens_paziente_agenda/screens_paziente_agenda-library.html">paziente_agenda</a></li>
+      <li><a href="screens_paziente_doctor_screen/screens_paziente_doctor_screen-library.html">paziente_doctor_screen</a></li>
+      <li><a href="screens_paziente_home/screens_paziente_home-library.html">paziente_home</a></li>
+      <li><a href="screens_paziente_notifiche/screens_paziente_notifiche-library.html">paziente_notifiche</a></li>
+      <li><a href="screens_paziente_profilo/screens_paziente_profilo-library.html">paziente_profilo</a></li>
+      <li><a href="screens_paziente_send_feedback/screens_paziente_send_feedback-library.html">paziente_send_feedback</a></li>
+      <li><a href="services_shared_preferences_service/services_shared_preferences_service-library.html">shared_preferences_service</a></li>
+      <li><a href="constants_strings/constants_strings-library.html">strings</a></li>
+      <li><a href="models_terapia/models_terapia-library.html">terapia</a></li>
+      <li><a href="services_db_time_of_day_adapter/services_db_time_of_day_adapter-library.html">time_of_day_adapter</a></li>
+      <li><a href="models_tutore/models_tutore-library.html">tutore</a></li>
+      <li><a href="bloc_tutore_tutore_bloc/bloc_tutore_tutore_bloc-library.html">tutore_bloc</a></li>
+      <li><a href="screens_tutore_home/screens_tutore_home-library.html">tutore_home</a></li>
+      <li><a href="screens_tutore_paziente_details/screens_tutore_paziente_details-library.html">tutore_paziente_details</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    glucose_guardian
+      1.0.0+3
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

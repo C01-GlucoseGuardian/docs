@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JwtService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.autenticazione.service</a> &gt; <span class="el_source">JwtService.java</span></div><h1>JwtService.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.autenticazione.service;
+
+import com.glucoseguardian.webbackend.storage.entity.TipoUtente;
+import com.glucoseguardian.webbackend.storage.entity.Utente;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.PrematureJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+import java.util.Date;
+import java.util.Map;
+import java.util.function.Function;
+import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Service;
+
+/**
+ * Servizio che genera e valida token Jwt. Utilizza HMAC-SHA256. Basato su {@link Jwts}.
+ */
+@Service
+<span class="fc" id="L27">public class JwtService {</span>
+
+  private static final String TIPO_UTENTE = &quot;tip&quot;;
+  // 30 days in seconds
+  private static final int TOKEN_VALIDITY = 86_400 * 30;
+  @Value(&quot;${jwt.secret}&quot;)
+  private String secret;
+
+  public @Nullable String getUsername(@NonNull String token) {
+<span class="fc" id="L36">    return getClaim(token, Claims::getSubject);</span>
+  }
+
+  private &lt;T&gt; @Nullable T getClaim(@NonNull String token,
+      @NonNull Function&lt;Claims, T&gt; claimsResolver) {
+    try {
+<span class="fc" id="L42">      final Claims claims = extractAllClaims(token);</span>
+<span class="fc" id="L43">      return claimsResolver.apply(claims);</span>
+<span class="nc" id="L44">    } catch (MalformedJwtException e) {</span>
+<span class="nc" id="L45">      return null;</span>
+    }
+  }
+
+  private &lt;T&gt; @Nullable T getClaim(@NonNull String token, @NonNull String key,
+      @NonNull Class&lt;T&gt; type)  {
+    try {
+<span class="fc" id="L52">      final Claims claims = extractAllClaims(token);</span>
+<span class="fc" id="L53">      return claims.get(key, type);</span>
+<span class="nc" id="L54">    } catch (MalformedJwtException e) {</span>
+<span class="nc" id="L55">      return null;</span>
+    }
+  }
+
+  /**
+   * Genera un token jwt usando SHA256-HMAC, con i campi NotBefore, IssuedAt, Expiration,
+   * TipoUtente, Subject.
+   */
+  public @NonNull String generateToken(@NonNull Utente userDetails) {
+<span class="fc" id="L64">    return generateToken(userDetails, new Date());</span>
+  }
+
+  /**
+   * Genera un token jwt usando SHA256-HMAC, con i campi NotBefore, IssuedAt, Expiration,
+   * TipoUtente, Subject, utilizzando il currentTime passato in input.
+   */
+  public @NonNull String generateToken(@NonNull Utente userDetails, Date currentTime) {
+<span class="fc" id="L72">    Date notBefore = DateUtils.addDays(currentTime, -1);</span>
+<span class="fc" id="L73">    Date expirationTime = DateUtils.addSeconds(currentTime, TOKEN_VALIDITY);</span>
+<span class="fc" id="L74">    return Jwts.builder()</span>
+<span class="fc" id="L75">        .setClaims(Map.of(TIPO_UTENTE, userDetails.getTipoUtente().name()))</span>
+<span class="fc" id="L76">        .setSubject(userDetails.getUsername())</span>
+<span class="fc" id="L77">        .setNotBefore(notBefore)</span>
+<span class="fc" id="L78">        .setIssuedAt(currentTime)</span>
+<span class="fc" id="L79">        .setExpiration(expirationTime)</span>
+<span class="fc" id="L80">        .signWith(getSignInKey(), SignatureAlgorithm.HS256)</span>
+<span class="fc" id="L81">        .compact();</span>
+  }
+
+  /**
+   * Controlla se un token è valido. Un token è valido se appartiene a un utente con account
+   * abilitato presente nel database, se il suo tipo corrisponde a quello nel token, se il token non
+   * è scaduto, se il token non è nel futuro.
+   */
+  public boolean isTokenValid(@NonNull String token, @NonNull Utente userDetails) {
+    try {
+<span class="fc" id="L91">      String username = getUsername(token);</span>
+<span class="fc" id="L92">      TipoUtente tipoUtente = getTipoUtente(token);</span>
+
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">      return userDetails.getUsername().equals(username)</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">          &amp;&amp; userDetails.getTipoUtente().equals(tipoUtente)</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">          &amp;&amp; !isTokenExpired(token)</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">          &amp;&amp; !isTokenInFuture(token)</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">          &amp;&amp; userDetails.isEnabled();</span>
+<span class="nc" id="L99">    } catch (Exception ex) {</span>
+<span class="nc" id="L100">      return false;</span>
+    }
+  }
+
+  private boolean isTokenExpired(@NonNull String token) {
+<span class="fc" id="L105">    Date expiration = getClaim(token, Claims::getExpiration);</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">    if (expiration != null) {</span>
+<span class="fc" id="L107">      return expiration.before(new Date());</span>
+    }
+<span class="nc" id="L109">    return true;</span>
+  }
+
+  private boolean isTokenInFuture(@NonNull String token) {
+<span class="fc" id="L113">    Date future = getClaim(token, Claims::getNotBefore);</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">    if (future != null) {</span>
+<span class="fc" id="L115">      return future.after(new Date());</span>
+    }
+<span class="nc" id="L117">    return true;</span>
+  }
+
+  private @NonNull TipoUtente getTipoUtente(@NonNull String token) {
+<span class="fc" id="L121">    return TipoUtente.valueOf(getClaim(token, TIPO_UTENTE, String.class));</span>
+  }
+
+  private @NonNull Claims extractAllClaims(@NonNull String token) throws MalformedJwtException {
+    try {
+<span class="fc" id="L126">      return Jwts</span>
+<span class="fc" id="L127">          .parserBuilder()</span>
+<span class="fc" id="L128">          .setSigningKey(getSignInKey())</span>
+<span class="fc" id="L129">          .build()</span>
+<span class="fc" id="L130">          .parseClaimsJws(token)</span>
+<span class="fc" id="L131">          .getBody();</span>
+<span class="nc" id="L132">    } catch (ExpiredJwtException | PrematureJwtException e) {</span>
+      // Get Claims from expired token
+<span class="nc" id="L134">      return e.getClaims();</span>
+    }
+  }
+
+  private @NonNull Key getSignInKey() {
+<span class="fc" id="L139">    byte[] keyBytes = Decoders.BASE64.decode(secret);</span>
+<span class="fc" id="L140">    return Keys.hmacShaKeyFor(keyBytes);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

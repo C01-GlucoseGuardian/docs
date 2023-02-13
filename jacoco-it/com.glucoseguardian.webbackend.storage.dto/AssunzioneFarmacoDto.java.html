@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssunzioneFarmacoDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.dto</a> &gt; <span class="el_source">AssunzioneFarmacoDto.java</span></div><h1>AssunzioneFarmacoDto.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.glucoseguardian.webbackend.storage.entity.AssunzioneFarmaco;
+import java.io.Serializable;
+import java.util.regex.Pattern;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Rappresenta l'entita assunzione farmaco.
+ */
+@JsonInclude(Include.NON_ABSENT)
+public class AssunzioneFarmacoDto extends RisultatoDto implements Serializable {
+
+  private Long id;
+  private Long idFarmaco;
+  private String nomeFarmaco;
+  private String dosaggio;
+  private String orarioAssunzione;
+  private String viaDiSomministrazione;
+  private String noteAggiuntive;
+
+  /**
+   * Costruttore completo.
+   */
+  public AssunzioneFarmacoDto(Long id, Long idFarmaco, String dosaggio, String orarioAssunzione,
+<span class="nc" id="L28">      String viaDiSomministrazione, String noteAggiuntive) {</span>
+<span class="nc" id="L29">    this.id = id;</span>
+<span class="nc" id="L30">    this.idFarmaco = idFarmaco;</span>
+<span class="nc" id="L31">    this.dosaggio = dosaggio;</span>
+<span class="nc" id="L32">    this.orarioAssunzione = orarioAssunzione;</span>
+<span class="nc" id="L33">    this.viaDiSomministrazione = viaDiSomministrazione;</span>
+<span class="nc" id="L34">    this.noteAggiuntive = noteAggiuntive;</span>
+<span class="nc" id="L35">  }</span>
+
+<span class="fc" id="L37">  public AssunzioneFarmacoDto() {</span>
+<span class="fc" id="L38">  }</span>
+
+  public Long getId() {
+<span class="fc" id="L41">    return id;</span>
+  }
+
+  public void setId(Long id) {
+<span class="nc" id="L45">    this.id = id;</span>
+<span class="nc" id="L46">  }</span>
+
+  public Long getIdFarmaco() {
+<span class="fc" id="L49">    return idFarmaco;</span>
+  }
+
+  public void setIdFarmaco(Long idFarmaco) {
+<span class="fc" id="L53">    this.idFarmaco = idFarmaco;</span>
+<span class="fc" id="L54">  }</span>
+
+  public String getDosaggio() {
+<span class="fc" id="L57">    return dosaggio;</span>
+  }
+
+  public void setDosaggio(String dosaggio) {
+<span class="fc" id="L61">    this.dosaggio = dosaggio;</span>
+<span class="fc" id="L62">  }</span>
+
+  public String getOrarioAssunzione() {
+<span class="fc" id="L65">    return orarioAssunzione;</span>
+  }
+
+  public void setOrarioAssunzione(String orarioAssunzione) {
+<span class="fc" id="L69">    this.orarioAssunzione = orarioAssunzione;</span>
+<span class="fc" id="L70">  }</span>
+
+  public String getViaDiSomministrazione() {
+<span class="fc" id="L73">    return viaDiSomministrazione;</span>
+  }
+
+  public void setViaDiSomministrazione(String viaDiSomministrazione) {
+<span class="fc" id="L77">    this.viaDiSomministrazione = viaDiSomministrazione;</span>
+<span class="fc" id="L78">  }</span>
+
+  public String getNoteAggiuntive() {
+<span class="fc" id="L81">    return noteAggiuntive;</span>
+  }
+
+  public void setNoteAggiuntive(String noteAggiuntive) {
+<span class="fc" id="L85">    this.noteAggiuntive = noteAggiuntive;</span>
+<span class="fc" id="L86">  }</span>
+
+  public String getNomeFarmaco() {
+<span class="fc" id="L89">    return nomeFarmaco;</span>
+  }
+
+  public void setNomeFarmaco(String nomeFarmaco) {
+<span class="fc" id="L93">    this.nomeFarmaco = nomeFarmaco;</span>
+<span class="fc" id="L94">  }</span>
+
+  /**
+   * Costruisce un {@link AssunzioneFarmacoDto} a partire da un {@link AssunzioneFarmaco}.
+   */
+  public static AssunzioneFarmacoDto valueOf(AssunzioneFarmaco assunzioneFarmaco) {
+<span class="nc" id="L100">    String timeString = assunzioneFarmaco.getOrarioAssunzione().toString();</span>
+
+<span class="nc" id="L102">    AssunzioneFarmacoDto assunzioneFarmacoDto = new AssunzioneFarmacoDto();</span>
+<span class="nc" id="L103">    assunzioneFarmacoDto.setNomeFarmaco(assunzioneFarmaco.getFarmaco().getNomeFarmaco());</span>
+<span class="nc" id="L104">    assunzioneFarmacoDto.setIdFarmaco(assunzioneFarmaco.getFarmaco().getId());</span>
+<span class="nc" id="L105">    assunzioneFarmacoDto.setId(assunzioneFarmaco.getId());</span>
+<span class="nc" id="L106">    assunzioneFarmacoDto.setDosaggio(assunzioneFarmaco.getDosaggio());</span>
+<span class="nc" id="L107">    assunzioneFarmacoDto.setOrarioAssunzione(timeString);</span>
+<span class="nc" id="L108">    assunzioneFarmacoDto.setViaDiSomministrazione(assunzioneFarmaco.getViaDiSomministrazione());</span>
+<span class="nc" id="L109">    assunzioneFarmacoDto.setNoteAggiuntive(assunzioneFarmacoDto.getNoteAggiuntive());</span>
+<span class="nc" id="L110">    return assunzioneFarmacoDto;</span>
+  }
+
+  /**
+   * Validation of AssunzioneFarmaco.
+   */
+
+  public void validate() {
+<span class="fc" id="L118">    Validate.notNull(idFarmaco, &quot;idFarmaco non può essere assente&quot;);</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">    if (nomeFarmaco != null) {</span>
+<span class="pc bpc" id="L120" title="1 of 4 branches missed.">      Validate.isTrue(nomeFarmaco.length() &lt;= 50 &amp;&amp; nomeFarmaco.length() &gt;= 1,</span>
+          &quot;il nome del farmaco è della lunghezza errata&quot;);
+    }
+<span class="fc" id="L123">    Validate.notNull(dosaggio, &quot;il dosaggio non può essere vuoto&quot;);</span>
+<span class="fc bfc" id="L124" title="All 4 branches covered.">    Validate.isTrue(dosaggio.length() &lt;= 20 &amp;&amp; dosaggio.length() &gt;= 1,</span>
+        &quot;La lunghezza del dosaggio è errata&quot;);
+<span class="fc" id="L126">    Validate.notNull(orarioAssunzione, &quot;l'orario di assunzione non può essere vuoto&quot;);</span>
+<span class="fc" id="L127">    Pattern pattern = Pattern.compile(&quot;([0-1][0-9]|2[0-3]):[0-5][0-9]&quot;);</span>
+<span class="fc" id="L128">    Validate.isTrue(pattern.matcher(orarioAssunzione).matches(),</span>
+        &quot;L'orario di assunzione non è valido&quot;);
+<span class="fc" id="L130">    Validate.notNull(viaDiSomministrazione, &quot;La via di somministrazione non può essere assente&quot;);</span>
+<span class="fc bfc" id="L131" title="All 4 branches covered.">    Validate.isTrue(viaDiSomministrazione.length() &lt;= 300 &amp;&amp; viaDiSomministrazione.length() &gt;= 1,</span>
+        &quot;La lunghezza della via di somministrazione è errata&quot;);
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">    if (noteAggiuntive != null) {</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">      Validate.isTrue(noteAggiuntive.length() &lt;= 300,</span>
+          &quot;Le note aggiuntive superano la lunghezza consentita&quot;);
+    }
+<span class="fc" id="L137">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

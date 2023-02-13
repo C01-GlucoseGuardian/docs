@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FarmacoServiceConcrete.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.farmaco.service</a> &gt; <span class="el_source">FarmacoServiceConcrete.java</span></div><h1>FarmacoServiceConcrete.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.farmaco.service;
+
+import com.glucoseguardian.webbackend.exceptions.EntityNotFoundException;
+import com.glucoseguardian.webbackend.storage.dao.FarmacoDao;
+import com.glucoseguardian.webbackend.storage.dto.FarmacoDto;
+import com.glucoseguardian.webbackend.storage.dto.ListDto;
+import com.glucoseguardian.webbackend.storage.entity.Farmaco;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
+/**
+ * This is an implementation of FarmacoServiceInterface.
+ */
+@Service
+@Primary
+<span class="fc" id="L21">public class FarmacoServiceConcrete implements FarmacoServiceInterface {</span>
+
+  @Autowired
+  private FarmacoDao farmacoDao;
+
+  @Override
+  public FarmacoDto findById(Long id) throws EntityNotFoundException {
+<span class="nc" id="L28">    Farmaco result = farmacoDao.findById(id).orElse(null);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">    if (result != null) {</span>
+<span class="nc" id="L30">      return FarmacoDto.valueOf(result);</span>
+    } else {
+<span class="nc" id="L32">      throw new EntityNotFoundException(&quot;Farmaco non trovato.&quot;);</span>
+    }
+  }
+
+  @Override
+  public ListDto&lt;FarmacoDto&gt; findFarmaco(String ricerca) {
+<span class="nc" id="L38">    List&lt;Farmaco&gt; listNome = farmacoDao.findByNomeFarmacoContainingIgnoreCase(ricerca);</span>
+<span class="nc" id="L39">    List&lt;Farmaco&gt; listPrincipio = farmacoDao.findByPrincipioAttivoContainingIgnoreCase(ricerca);</span>
+<span class="nc" id="L40">    List&lt;Farmaco&gt; listConfezione = farmacoDao.findByConfezioneContainingIgnoreCase(ricerca);</span>
+
+<span class="nc" id="L42">    Set&lt;Farmaco&gt; set = new LinkedHashSet&lt;&gt;(listNome);</span>
+<span class="nc" id="L43">    set.addAll(listPrincipio);</span>
+<span class="nc" id="L44">    set.addAll(listConfezione);</span>
+
+<span class="nc" id="L46">    List&lt;FarmacoDto&gt; ricercaFarmaci = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">    for (Farmaco farmaco : set) {</span>
+<span class="nc" id="L48">      ricercaFarmaci.add(FarmacoDto.valueOf(farmaco));</span>
+<span class="nc" id="L49">    }</span>
+<span class="nc" id="L50">    ListDto&lt;FarmacoDto&gt; listDto = new ListDto&lt;&gt;(ricercaFarmaci);</span>
+<span class="nc" id="L51">    return listDto;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

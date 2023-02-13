@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.configuration</a> &gt; <span class="el_source">AppConfig.java</span></div><h1>AppConfig.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.configuration;
+
+import com.glucoseguardian.webbackend.storage.dao.UtenteDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+/**
+ * JavaSpring configuration.
+ */
+@Configuration
+@EnableAsync
+<span class="nc" id="L20">public class AppConfig {</span>
+
+  @Autowired
+  private UtenteDao utenteDao;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
+  @Bean
+  public @NonNull UserDetailsService userDetailsService() throws UsernameNotFoundException {
+<span class="nc" id="L30">    return username -&gt; utenteDao.findByEmail(username)</span>
+<span class="nc" id="L31">        .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;Utente non trovato&quot;));</span>
+  }
+
+  /**
+   * Authentication Provider.
+   */
+  @Bean
+  public @NonNull AuthenticationProvider authenticationProvider() {
+<span class="nc" id="L39">    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();</span>
+<span class="nc" id="L40">    authProvider.setUserDetailsService(userDetailsService());</span>
+<span class="nc" id="L41">    authProvider.setPasswordEncoder(passwordEncoder);</span>
+<span class="nc" id="L42">    return authProvider;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

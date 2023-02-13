@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Feedback.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.entity</a> &gt; <span class="el_source">Feedback.java</span></div><h1>Feedback.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Time;
+import java.util.Objects;
+
+/**
+ * Questa classe rappresenta l'entità Feedback.
+ */
+@Entity
+public class Feedback implements Serializable {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+
+  @Column(length = 300)
+  @NotNull
+  private String statoSalute;
+
+  @Column(length = 300)
+  @NotNull
+  private String oreSonno;
+
+  @Column(length = 300)
+  @NotNull
+  private String dolori;
+
+  @Column(length = 300)
+  @NotNull
+  private String svenimenti;
+
+  @NotNull
+  private Date data;
+
+  @NotNull
+  private Time ora;
+  @ManyToOne
+  @JoinColumn(name = &quot;paziente&quot;)
+  private Paziente paziente;
+  @ManyToOne
+  @JoinColumn(name = &quot;dottore&quot;)
+  private Dottore dottore;
+
+<span class="nc" id="L54">  public Feedback() {</span>
+
+<span class="nc" id="L56">  }</span>
+
+  /**
+   * Costruttore di default della classe Feedback.
+   */
+  public Feedback(String statoSalute, String oreSonno, String dolori, String svenimenti, Date data,
+<span class="fc" id="L62">      Time ora, Paziente paziente) {</span>
+<span class="fc" id="L63">    this.statoSalute = statoSalute;</span>
+<span class="fc" id="L64">    this.oreSonno = oreSonno;</span>
+<span class="fc" id="L65">    this.dolori = dolori;</span>
+<span class="fc" id="L66">    this.svenimenti = svenimenti;</span>
+<span class="fc" id="L67">    this.data = data;</span>
+<span class="fc" id="L68">    this.ora = ora;</span>
+<span class="fc" id="L69">    this.paziente = paziente;</span>
+<span class="fc" id="L70">  }</span>
+
+  public long getId() {
+<span class="fc" id="L73">    return id;</span>
+  }
+
+  public void setId(long id) {
+<span class="nc" id="L77">    this.id = id;</span>
+<span class="nc" id="L78">  }</span>
+
+  public String getStatoSalute() {
+<span class="nc" id="L81">    return statoSalute;</span>
+  }
+
+  public void setStatoSalute(String statoSalute) {
+<span class="nc" id="L85">    this.statoSalute = statoSalute;</span>
+<span class="nc" id="L86">  }</span>
+
+  public String getOreSonno() {
+<span class="nc" id="L89">    return oreSonno;</span>
+  }
+
+  public void setOreSonno(String oreSonno) {
+<span class="nc" id="L93">    this.oreSonno = oreSonno;</span>
+<span class="nc" id="L94">  }</span>
+
+  public String getDolori() {
+<span class="nc" id="L97">    return dolori;</span>
+  }
+
+  public void setDolori(String dolori) {
+<span class="nc" id="L101">    this.dolori = dolori;</span>
+<span class="nc" id="L102">  }</span>
+
+  public String getSvenimenti() {
+<span class="nc" id="L105">    return svenimenti;</span>
+  }
+
+  public void setSvenimenti(String svenimenti) {
+<span class="nc" id="L109">    this.svenimenti = svenimenti;</span>
+<span class="nc" id="L110">  }</span>
+
+  public Date getData() {
+<span class="nc" id="L113">    return data;</span>
+  }
+
+  public void setData(Date data) {
+<span class="nc" id="L117">    this.data = data;</span>
+<span class="nc" id="L118">  }</span>
+
+  public Time getOra() {
+<span class="nc" id="L121">    return ora;</span>
+  }
+
+  public void setOra(Time ora) {
+<span class="nc" id="L125">    this.ora = ora;</span>
+<span class="nc" id="L126">  }</span>
+
+  public Paziente getPaziente() {
+<span class="nc" id="L129">    return paziente;</span>
+  }
+
+  public void setPaziente(Paziente paziente) {
+<span class="nc" id="L133">    this.paziente = paziente;</span>
+<span class="nc" id="L134">  }</span>
+
+  public Dottore getDottore() {
+<span class="nc" id="L137">    return dottore;</span>
+  }
+
+  public void setDottore(Dottore dottore) {
+<span class="fc" id="L141">    this.dottore = dottore;</span>
+<span class="fc" id="L142">  }</span>
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L146" title="All 2 branches missed.">    if (o instanceof Feedback) {</span>
+<span class="nc" id="L147">      return Objects.equals(id, ((Feedback) o).id);</span>
+    }
+<span class="nc" id="L149">    return false;</span>
+  }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlicemiaServiceConcrete.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.glicemia.service</a> &gt; <span class="el_source">GlicemiaServiceConcrete.java</span></div><h1>GlicemiaServiceConcrete.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.glicemia.service;
+
+import com.glucoseguardian.webbackend.exceptions.EntityNotFoundException;
+import com.glucoseguardian.webbackend.exceptions.UserNotFoundException;
+import com.glucoseguardian.webbackend.storage.dao.GlicemiaDao;
+import com.glucoseguardian.webbackend.storage.dao.PazienteDao;
+import com.glucoseguardian.webbackend.storage.dto.GlicemiaDto;
+import com.glucoseguardian.webbackend.storage.dto.ListDto;
+import com.glucoseguardian.webbackend.storage.entity.Glicemia;
+import com.glucoseguardian.webbackend.storage.entity.Paziente;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Service;
+
+/**
+ * Implementazione concreta di Glicemia Service.
+ */
+@Service
+@Primary
+<span class="nc" id="L24">public class GlicemiaServiceConcrete implements GlicemiaServiceInterface {</span>
+
+  @Autowired
+  private PazienteDao pazienteDao;
+  @Autowired
+  private GlicemiaDao glicemiaDao;
+
+  @Override
+  public GlicemiaDto getLast(String codiceFiscale) throws EntityNotFoundException {
+<span class="nc" id="L33">    Glicemia result = glicemiaDao.findTopByPaziente_codiceFiscaleOrderByDataOraDesc(codiceFiscale)</span>
+<span class="nc" id="L34">        .orElse(null);</span>
+
+<span class="nc bnc" id="L36" title="All 2 branches missed.">    if (result != null) {</span>
+<span class="nc" id="L37">      return GlicemiaDto.valueOf(result);</span>
+    } else {
+<span class="nc" id="L39">      throw new EntityNotFoundException(&quot;Nessuna glicemia trovata.&quot;);</span>
+    }
+  }
+
+  @Override
+  public ListDto&lt;GlicemiaDto&gt; getRange(String codiceFiscale, long start, long end) {
+<span class="nc" id="L45">    List&lt;Glicemia&gt; list = glicemiaDao</span>
+<span class="nc" id="L46">        .findByPaziente_codiceFiscaleAndDataOraBetweenOrderByDataOraDesc(</span>
+            codiceFiscale,
+            new Timestamp(start),
+            new Timestamp(end)
+        );
+
+<span class="nc" id="L52">    return new ListDto&lt;&gt;(list.stream().map(GlicemiaDto::valueOf).toList());</span>
+  }
+
+  @Override
+  public boolean send(String codiceFiscale, ListDto&lt;GlicemiaDto&gt; list)
+      throws UserNotFoundException {
+<span class="nc" id="L58">    Paziente paziente = getPaziente(codiceFiscale);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">    for (GlicemiaDto dto : list.getList()) {</span>
+<span class="nc" id="L60">      Timestamp dateTime = new Timestamp(dto.getTimestamp());</span>
+<span class="nc" id="L61">      Glicemia glicemia = new Glicemia(dto.getLivelloGlucosio(), dateTime);</span>
+<span class="nc" id="L62">      glicemia.setPaziente(paziente);</span>
+<span class="nc" id="L63">      glicemiaDao.save(glicemia);</span>
+<span class="nc" id="L64">    }</span>
+<span class="nc" id="L65">    return true;</span>
+  }
+
+  private @NonNull Paziente getPaziente(String codiceFiscale) throws UserNotFoundException {
+<span class="nc" id="L69">    Optional&lt;Paziente&gt; paziente = pazienteDao.findById(codiceFiscale);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">    if (paziente.isPresent()) {</span>
+<span class="nc" id="L71">      return paziente.get();</span>
+    } else {
+<span class="nc" id="L73">      throw new UserNotFoundException(&quot;Paziente non trovato.&quot;);</span>
+    }
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

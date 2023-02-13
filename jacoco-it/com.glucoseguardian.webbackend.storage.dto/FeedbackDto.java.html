@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FeedbackDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.dto</a> &gt; <span class="el_source">FeedbackDto.java</span></div><h1>FeedbackDto.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.glucoseguardian.webbackend.storage.entity.Feedback;
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.regex.Pattern;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Rappresenta l'entity feedback.
+ */
+@JsonInclude(Include.NON_ABSENT)
+public class FeedbackDto extends RisultatoDto implements Serializable {
+
+  private Long id;
+  private String oreSonno;
+  private String statoSalute;
+  private String dolori;
+  private String svenimenti;
+  private String data;
+  private String ora;
+  private String idPaziente;
+  private String idDottore;
+
+
+  /**
+   * Costruttore completo.
+   */
+  public FeedbackDto(Long id, String oreSonno, String statoSalute, String dolori, String svenimenti,
+<span class="nc" id="L33">      String data, String ora, String idPaziente, String idDottore) {</span>
+<span class="nc" id="L34">    this.id = id;</span>
+<span class="nc" id="L35">    this.oreSonno = oreSonno;</span>
+<span class="nc" id="L36">    this.statoSalute = statoSalute;</span>
+<span class="nc" id="L37">    this.dolori = dolori;</span>
+<span class="nc" id="L38">    this.svenimenti = svenimenti;</span>
+<span class="nc" id="L39">    this.data = data;</span>
+<span class="nc" id="L40">    this.ora = ora;</span>
+<span class="nc" id="L41">    this.idPaziente = idPaziente;</span>
+<span class="nc" id="L42">    this.idDottore = idDottore;</span>
+<span class="nc" id="L43">  }</span>
+
+<span class="fc" id="L45">  public FeedbackDto() {</span>
+<span class="fc" id="L46">  }</span>
+
+  public Long getId() {
+<span class="fc" id="L49">    return id;</span>
+  }
+
+  public void setId(Long id) {
+<span class="nc" id="L53">    this.id = id;</span>
+<span class="nc" id="L54">  }</span>
+
+  public String getOreSonno() {
+<span class="fc" id="L57">    return oreSonno;</span>
+  }
+
+  public void setOreSonno(String oreSonno) {
+<span class="fc" id="L61">    this.oreSonno = oreSonno;</span>
+<span class="fc" id="L62">  }</span>
+
+  public String getStatoSalute() {
+<span class="fc" id="L65">    return statoSalute;</span>
+  }
+
+  public void setStatoSalute(String statoSalute) {
+<span class="fc" id="L69">    this.statoSalute = statoSalute;</span>
+<span class="fc" id="L70">  }</span>
+
+  public String getDolori() {
+<span class="fc" id="L73">    return dolori;</span>
+  }
+
+  public void setDolori(String dolori) {
+<span class="fc" id="L77">    this.dolori = dolori;</span>
+<span class="fc" id="L78">  }</span>
+
+  public String getSvenimenti() {
+<span class="fc" id="L81">    return svenimenti;</span>
+  }
+
+  public void setSvenimenti(String svenimenti) {
+<span class="fc" id="L85">    this.svenimenti = svenimenti;</span>
+<span class="fc" id="L86">  }</span>
+
+  public String getData() {
+<span class="fc" id="L89">    return data;</span>
+  }
+
+  public void setData(String data) {
+<span class="nc" id="L93">    this.data = data;</span>
+<span class="nc" id="L94">  }</span>
+
+  public String getOra() {
+<span class="fc" id="L97">    return ora;</span>
+  }
+
+  public void setOra(String ora) {
+<span class="nc" id="L101">    this.ora = ora;</span>
+<span class="nc" id="L102">  }</span>
+
+  public String getIdPaziente() {
+<span class="fc" id="L105">    return idPaziente;</span>
+  }
+
+  public void setIdPaziente(String idPaziente) {
+<span class="fc" id="L109">    this.idPaziente = idPaziente;</span>
+<span class="fc" id="L110">  }</span>
+
+  public String getIdDottore() {
+<span class="fc" id="L113">    return idDottore;</span>
+  }
+
+  public void setIdDottore(String idDottore) {
+<span class="nc" id="L117">    this.idDottore = idDottore;</span>
+<span class="nc" id="L118">  }</span>
+
+  /**
+   * Costruisce un {@link FeedbackDto} a partire da un {@link Feedback}.
+   */
+  public static FeedbackDto valueOf(Feedback feedback) {
+<span class="nc" id="L124">    DateFormat dateFormat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="nc" id="L125">    String dataFeedbackDto = dateFormat.format(feedback.getData());</span>
+
+<span class="nc" id="L127">    SimpleDateFormat sdf = new SimpleDateFormat(&quot;HH:mm:ss&quot;);</span>
+<span class="nc" id="L128">    String timeString = sdf.format(feedback.getOra());</span>
+
+<span class="nc" id="L130">    FeedbackDto feedbackDto = new FeedbackDto();</span>
+<span class="nc" id="L131">    feedbackDto.setId(feedback.getId());</span>
+<span class="nc" id="L132">    feedbackDto.setOreSonno(feedback.getOreSonno());</span>
+<span class="nc" id="L133">    feedbackDto.setStatoSalute(feedback.getStatoSalute());</span>
+<span class="nc" id="L134">    feedbackDto.setDolori(feedback.getDolori());</span>
+<span class="nc" id="L135">    feedbackDto.setSvenimenti(feedback.getSvenimenti());</span>
+<span class="nc" id="L136">    feedbackDto.setData(dataFeedbackDto);</span>
+<span class="nc" id="L137">    feedbackDto.setOra(timeString);</span>
+<span class="nc" id="L138">    feedbackDto.setIdDottore(feedback.getDottore().getCodiceFiscale());</span>
+<span class="nc" id="L139">    feedbackDto.setIdPaziente(feedback.getPaziente().getCodiceFiscale());</span>
+<span class="nc" id="L140">    return feedbackDto;</span>
+  }
+
+  /**
+   *  validazione del feedback.
+   */
+
+  public void validate() {
+<span class="fc" id="L148">    Validate.notNull(oreSonno, &quot;le ore sonno non possono essere assente&quot;);</span>
+<span class="pc bpc" id="L149" title="1 of 4 branches missed.">    Validate.isTrue(oreSonno.length() &lt;= 300 &amp;&amp; oreSonno.length() &gt;= 1,</span>
+        &quot;la lunghezza di ore sonno non è valida&quot;);
+
+<span class="fc" id="L152">    Validate.notNull(statoSalute, &quot;stato salute non puo essere assente&quot;);</span>
+<span class="pc bpc" id="L153" title="1 of 4 branches missed.">    Validate.isTrue(statoSalute.length() &lt;= 300 &amp;&amp; statoSalute.length() &gt;= 1,</span>
+        &quot;la lunghezza di stato salute non è valida&quot;);
+
+<span class="fc" id="L156">    Validate.notNull(dolori, &quot;dolori non puo essere assente&quot;);</span>
+<span class="pc bpc" id="L157" title="1 of 4 branches missed.">    Validate.isTrue(dolori.length() &lt;= 300 &amp;&amp; dolori.length() &gt;= 1,</span>
+        &quot;la lunghezza di dolori non è valida&quot;);
+
+<span class="fc" id="L160">    Validate.notNull(svenimenti, &quot;svenimenti non puo essere assente&quot;);</span>
+<span class="pc bpc" id="L161" title="1 of 4 branches missed.">    Validate.isTrue(svenimenti.length() &lt;= 300 &amp;&amp; svenimenti.length() &gt;= 1,</span>
+        &quot;la lunghezza di svenimenti non è valida&quot;);
+
+<span class="fc" id="L164">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

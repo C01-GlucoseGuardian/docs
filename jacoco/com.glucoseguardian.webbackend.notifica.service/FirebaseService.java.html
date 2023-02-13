@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FirebaseService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.notifica.service</a> &gt; <span class="el_source">FirebaseService.java</span></div><h1>FirebaseService.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.notifica.service;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+/**
+ * Servizio che si occupa di inviare notifiche tramite firebase.
+ */
+@Service
+<span class="nc" id="L14">public class FirebaseService {</span>
+  @Autowired
+  private FirebaseMessaging fcm;
+
+  /**
+   * Metodo che invia una notifica, con titolo = title, contenuto = message al topic destinatario.
+   */
+  @Async
+  public void sendNotification(String title, String message, String destinatario) {
+<span class="nc" id="L23">    Message msg = Message.builder()</span>
+<span class="nc" id="L24">        .setTopic(destinatario.replace(&quot;@&quot;, &quot;%&quot;))</span>
+<span class="nc" id="L25">        .putData(&quot;title&quot;, title)</span>
+<span class="nc" id="L26">        .putData(&quot;message&quot;, message)</span>
+<span class="nc" id="L27">        .build();</span>
+    try {
+<span class="nc" id="L29">      fcm.sendAsync(msg);</span>
+<span class="nc" id="L30">    } catch (Exception ignored) {</span>
+      // Do nothing
+<span class="nc" id="L32">    }</span>
+<span class="nc" id="L33">  }</span>
+
+  /**
+   * Metodo che invia una notifica, con titolo = title, contenuto = message a
+   * tutti i topic in destinatari.
+   */
+  @Async
+  public void sendNotification(String title, String message, List&lt;String&gt; destinatari) {
+<span class="nc" id="L41">    destinatari.forEach(destinatario -&gt; sendNotification(title, message, destinatario));</span>
+<span class="nc" id="L42">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

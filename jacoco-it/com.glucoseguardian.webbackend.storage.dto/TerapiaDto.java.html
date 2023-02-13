@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TerapiaDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.dto</a> &gt; <span class="el_source">TerapiaDto.java</span></div><h1>TerapiaDto.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.glucoseguardian.webbackend.storage.entity.AssunzioneFarmaco;
+import com.glucoseguardian.webbackend.storage.entity.Terapia;
+import jakarta.validation.Valid;
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Rappresenta l'output delle funzioni di login.
+ */
+@JsonInclude(Include.NON_ABSENT)
+public class TerapiaDto extends RisultatoDto implements Serializable {
+
+  private Long id;
+  private String idPaziente;
+  private String idDottore;
+  private String dataInizio;
+  private List&lt;AssunzioneFarmacoDto&gt; farmaci;
+
+  /**
+   * Costruttore completo.
+   */
+  public TerapiaDto(Long id, String idPaziente, String idDottore, String dataInizio,
+<span class="fc" id="L31">      List&lt;AssunzioneFarmacoDto&gt; farmaci) {</span>
+<span class="fc" id="L32">    this.id = id;</span>
+<span class="fc" id="L33">    this.idPaziente = idPaziente;</span>
+<span class="fc" id="L34">    this.idDottore = idDottore;</span>
+<span class="fc" id="L35">    this.dataInizio = dataInizio;</span>
+<span class="fc" id="L36">    this.farmaci = farmaci;</span>
+<span class="fc" id="L37">  }</span>
+
+<span class="fc" id="L39">  public TerapiaDto() {</span>
+<span class="fc" id="L40">  }</span>
+
+  public Long getId() {
+<span class="fc" id="L43">    return id;</span>
+  }
+
+  public void setId(Long id) {
+<span class="nc" id="L47">    this.id = id;</span>
+<span class="nc" id="L48">  }</span>
+
+  public String getIdPaziente() {
+<span class="fc" id="L51">    return idPaziente;</span>
+  }
+
+  public void setIdPaziente(String idPaziente) {
+<span class="fc" id="L55">    this.idPaziente = idPaziente;</span>
+<span class="fc" id="L56">  }</span>
+
+  public String getIdDottore() {
+<span class="fc" id="L59">    return idDottore;</span>
+  }
+
+  public void setIdDottore(String idDottore) {
+<span class="nc" id="L63">    this.idDottore = idDottore;</span>
+<span class="nc" id="L64">  }</span>
+
+  public String getDataInizio() {
+<span class="fc" id="L67">    return dataInizio;</span>
+  }
+
+  public void setDataInizio(String dataInizio) {
+<span class="nc" id="L71">    this.dataInizio = dataInizio;</span>
+<span class="nc" id="L72">  }</span>
+
+  public List&lt;AssunzioneFarmacoDto&gt; getFarmaci() {
+<span class="fc" id="L75">    return farmaci;</span>
+  }
+
+  public void setFarmaci(
+      List&lt;AssunzioneFarmacoDto&gt; farmaci) {
+<span class="fc" id="L80">    this.farmaci = farmaci;</span>
+<span class="fc" id="L81">  }</span>
+
+  /**
+   * Costruisce un {@link TerapiaDto} a partire da un {@link Terapia}.
+   */
+  public static TerapiaDto valueOf(Terapia terapia) {
+<span class="nc" id="L87">    List&lt;AssunzioneFarmacoDto&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">    for (AssunzioneFarmaco assunzioneFarmaco : terapia.getAssunzioneFarmacos()) {</span>
+<span class="nc" id="L89">      list.add(AssunzioneFarmacoDto.valueOf(assunzioneFarmaco));</span>
+<span class="nc" id="L90">    }</span>
+<span class="nc" id="L91">    TerapiaDto terapiaDto = new TerapiaDto();</span>
+<span class="nc" id="L92">    terapiaDto.setId(terapia.getId());</span>
+<span class="nc" id="L93">    terapiaDto.setIdPaziente(terapia.getPaziente().getCodiceFiscale());</span>
+<span class="nc" id="L94">    terapiaDto.setIdDottore(terapia.getDottore().getCodiceFiscale());</span>
+<span class="nc" id="L95">    terapiaDto.setFarmaci(list);</span>
+
+<span class="nc" id="L97">    DateFormat dateFormat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="nc" id="L98">    String dataInizioTerapia = dateFormat.format(terapia.getDataInizio());</span>
+<span class="nc" id="L99">    terapiaDto.setDataInizio(dataInizioTerapia);</span>
+
+<span class="nc" id="L101">    return terapiaDto;</span>
+  }
+
+  /**
+   * Validation of Farmaco.
+   */
+  public void validate() {
+<span class="fc bfc" id="L108" title="All 2 branches covered.">    Validate.isTrue(!farmaci.isEmpty(), &quot;la lista farmaci non può essere vuota&quot;);</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">    for (AssunzioneFarmacoDto assunzioneFarmacoDto : farmaci) {</span>
+<span class="fc" id="L110">      assunzioneFarmacoDto.validate();</span>
+<span class="fc" id="L111">    }</span>
+<span class="fc" id="L112">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

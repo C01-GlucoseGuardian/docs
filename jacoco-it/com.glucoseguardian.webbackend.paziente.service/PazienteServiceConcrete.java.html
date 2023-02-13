@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PazienteServiceConcrete.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.paziente.service</a> &gt; <span class="el_source">PazienteServiceConcrete.java</span></div><h1>PazienteServiceConcrete.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.paziente.service;
+
+import com.glucoseguardian.webbackend.exceptions.DuplicatedEntityException;
+import com.glucoseguardian.webbackend.exceptions.EntityNotFoundException;
+import com.glucoseguardian.webbackend.exceptions.UserNotFoundException;
+import com.glucoseguardian.webbackend.notifica.service.MailService;
+import com.glucoseguardian.webbackend.storage.dao.AssunzioneFarmacoDao;
+import com.glucoseguardian.webbackend.storage.dao.DottoreDao;
+import com.glucoseguardian.webbackend.storage.dao.FarmacoDao;
+import com.glucoseguardian.webbackend.storage.dao.NumeroTelefonoDao;
+import com.glucoseguardian.webbackend.storage.dao.PazienteDao;
+import com.glucoseguardian.webbackend.storage.dao.TerapiaDao;
+import com.glucoseguardian.webbackend.storage.dao.TutoreDao;
+import com.glucoseguardian.webbackend.storage.dao.UtenteDao;
+import com.glucoseguardian.webbackend.storage.dto.AssunzioneFarmacoDto;
+import com.glucoseguardian.webbackend.storage.dto.CodiceFiscaleDto;
+import com.glucoseguardian.webbackend.storage.dto.ListDto;
+import com.glucoseguardian.webbackend.storage.dto.NumeroTelefonoDto;
+import com.glucoseguardian.webbackend.storage.dto.PazienteDto;
+import com.glucoseguardian.webbackend.storage.entity.AssunzioneFarmaco;
+import com.glucoseguardian.webbackend.storage.entity.Dottore;
+import com.glucoseguardian.webbackend.storage.entity.Farmaco;
+import com.glucoseguardian.webbackend.storage.entity.NumeroTelefono;
+import com.glucoseguardian.webbackend.storage.entity.Paziente;
+import com.glucoseguardian.webbackend.storage.entity.Terapia;
+import com.glucoseguardian.webbackend.storage.entity.Tutore;
+import java.security.SecureRandom;
+import java.sql.Date;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+/**
+ * This is an implementation of PazienteServiceInterface.
+ */
+@Service
+@Primary
+<span class="fc" id="L49">public class PazienteServiceConcrete implements PazienteServiceInterface {</span>
+
+  @Autowired
+  private PazienteDao pazienteDao;
+  @Autowired
+  private DottoreDao dottoreDao;
+  @Autowired
+  private NumeroTelefonoDao numeroTelefonoDao;
+  @Autowired
+  private TerapiaDao terapiaDao;
+  @Autowired
+  private FarmacoDao farmacoDao;
+  @Autowired
+  private AssunzioneFarmacoDao assunzioneFarmacoDao;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+  @Autowired
+  private MailService mailService;
+  @Autowired
+  private TutoreDao tutoreDao;
+  @Autowired
+  private UtenteDao utenteDao;
+
+  @Override
+  public PazienteDto findByCodiceFiscale(String codiceFiscalePaziente)
+      throws UserNotFoundException {
+<span class="nc" id="L75">    Paziente result = pazienteDao.findById(codiceFiscalePaziente).orElse(null);</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">    if (result != null) {</span>
+<span class="nc" id="L77">      return PazienteDto.valueOf(result);</span>
+    } else {
+<span class="nc" id="L79">      throw new UserNotFoundException(&quot;Paziente non trovato.&quot;);</span>
+    }
+  }
+
+  @Override
+  public ListDto&lt;PazienteDto&gt; findByDottore(String codiceFiscaleDottore)
+      throws UserNotFoundException {
+<span class="nc" id="L86">    Dottore result = dottoreDao.findById(codiceFiscaleDottore).orElse(null);</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">    if (result == null) {</span>
+<span class="nc" id="L88">      throw new UserNotFoundException(&quot;Dottore non trovato.&quot;);</span>
+    }
+<span class="nc" id="L90">    List&lt;Paziente&gt; list = result.getPazientes();</span>
+<span class="nc" id="L91">    List&lt;PazienteDto&gt; pazienteDtos = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">    for (Paziente paziente : list) {</span>
+<span class="nc" id="L93">      pazienteDtos.add(PazienteDto.valueOf(paziente));</span>
+<span class="nc" id="L94">    }</span>
+<span class="nc" id="L95">    ListDto&lt;PazienteDto&gt; listDto = new ListDto&lt;&gt;(pazienteDtos);</span>
+<span class="nc" id="L96">    return listDto;</span>
+  }
+
+  @Override
+  public ListDto&lt;PazienteDto&gt; findByTutore(String codiceFiscaleTutore) {
+<span class="nc" id="L101">    List&lt;Paziente&gt; list = pazienteDao.findByTutori_CodiceFiscale(codiceFiscaleTutore);</span>
+<span class="nc" id="L102">    List&lt;PazienteDto&gt; pazienteDtos = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">    for (Paziente paziente : list) {</span>
+<span class="nc" id="L104">      pazienteDtos.add(PazienteDto.valueOf(paziente));</span>
+<span class="nc" id="L105">    }</span>
+<span class="nc" id="L106">    ListDto&lt;PazienteDto&gt; listDto = new ListDto&lt;&gt;(pazienteDtos);</span>
+<span class="nc" id="L107">    return listDto;</span>
+  }
+
+  @Override
+  public ListDto&lt;PazienteDto&gt; findPaziente(String query) {
+<span class="nc" id="L112">    List&lt;Paziente&gt; listCf = pazienteDao.findByCodiceFiscaleContainingIgnoreCase(query);</span>
+<span class="nc" id="L113">    List&lt;Paziente&gt; listEmail = pazienteDao.findByEmailContainingIgnoreCase(query);</span>
+<span class="nc" id="L114">    List&lt;Paziente&gt; listCognome = pazienteDao.findByCognomeContainingIgnoreCase(query);</span>
+<span class="nc" id="L115">    List&lt;Paziente&gt; listNome = pazienteDao.findByNomeContainingIgnoreCase(query);</span>
+
+<span class="nc" id="L117">    Set&lt;Paziente&gt; set = new LinkedHashSet&lt;&gt;(listCf);</span>
+<span class="nc" id="L118">    set.addAll(listEmail);</span>
+<span class="nc" id="L119">    set.addAll(listCognome);</span>
+<span class="nc" id="L120">    set.addAll(listNome);</span>
+
+<span class="nc" id="L122">    List&lt;PazienteDto&gt; ricercaPaziente = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">    for (Paziente paziente : set) {</span>
+<span class="nc" id="L124">      ricercaPaziente.add(PazienteDto.valueOf(paziente));</span>
+<span class="nc" id="L125">    }</span>
+<span class="nc" id="L126">    ListDto&lt;PazienteDto&gt; listDto = new ListDto&lt;&gt;(ricercaPaziente);</span>
+<span class="nc" id="L127">    return listDto;</span>
+  }
+
+  @Override
+  public boolean save(PazienteDto dto) throws DuplicatedEntityException, EntityNotFoundException {
+<span class="fc bfc" id="L132" title="All 2 branches covered.">    if (pazienteDao.existsById(dto.getCodiceFiscale())) {</span>
+<span class="fc" id="L133">      throw new DuplicatedEntityException(&quot;Codice fiscale già presente nel database&quot;);</span>
+    }
+
+<span class="fc bfc" id="L136" title="All 2 branches covered.">    if (utenteDao.existsByEmail(dto.getEmail())) {</span>
+<span class="fc" id="L137">      throw new DuplicatedEntityException(&quot;Email già presente nel database&quot;);</span>
+    }
+
+<span class="fc" id="L140">    DateFormat dateInputFormat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L141">    DateFormat dateSqlFormat = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span>
+
+    String date;
+    try {
+<span class="fc" id="L145">      date = dateSqlFormat.format(dateInputFormat.parse(dto.getDataNascita()));</span>
+<span class="nc" id="L146">    } catch (ParseException parse) {</span>
+<span class="nc" id="L147">      throw new IllegalArgumentException(&quot;Data non valida&quot;);</span>
+<span class="fc" id="L148">    }</span>
+
+<span class="fc" id="L150">    String randomPassword = RandomStringUtils.random(16, 0, 0, true, true, null,</span>
+        new SecureRandom());
+
+    // Create entity
+<span class="fc" id="L154">    Paziente pazienteEntity = new Paziente(dto.getCodiceFiscale(), dto.getNome(), dto.getCognome(),</span>
+<span class="fc" id="L155">        Date.valueOf(date), dto.getIndirizzo(), dto.getTelefono(), dto.getEmail(),</span>
+<span class="fc" id="L156">        passwordEncoder.encode(randomPassword), dto.getSesso().charAt(0), null,</span>
+<span class="fc" id="L157">        dto.getTipoDiabete(), dto.getComorbilita(), dto.getFarmaciAssunti(),</span>
+<span class="fc" id="L158">        dto.getPeriodoDiMonitoraggio());</span>
+
+<span class="fc" id="L160">    Dottore dottoreEntity = dottoreDao.findById(dto.getIdDottore()).orElse(null);</span>
+
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">    if (dottoreEntity == null) {</span>
+<span class="nc" id="L163">      throw new UserNotFoundException(&quot;Dottore non trovato&quot;);</span>
+    }
+
+<span class="fc" id="L166">    pazienteEntity.setDottore(dottoreEntity);</span>
+
+<span class="fc" id="L168">    pazienteDao.saveAndFlush(pazienteEntity);</span>
+
+<span class="fc" id="L170">    List&lt;NumeroTelefonoDto&gt; listNumeroDto = dto.getNumeriUtili();</span>
+
+<span class="fc bfc" id="L172" title="All 2 branches covered.">    for (NumeroTelefonoDto numeroDto : listNumeroDto) {</span>
+<span class="fc" id="L173">      NumeroTelefono numero = new NumeroTelefono(numeroDto.getNumero(), pazienteEntity);</span>
+<span class="fc" id="L174">      numeroTelefonoDao.save(numero);</span>
+<span class="fc" id="L175">    }</span>
+
+<span class="fc" id="L177">    Terapia terapiaEntity = new Terapia();</span>
+<span class="fc" id="L178">    terapiaEntity.setDataInizio(new Date(System.currentTimeMillis()));</span>
+<span class="fc" id="L179">    terapiaEntity.setPaziente(pazienteEntity);</span>
+<span class="fc" id="L180">    terapiaEntity.setDottore(dottoreEntity);</span>
+<span class="fc" id="L181">    terapiaDao.save(terapiaEntity);</span>
+
+<span class="fc bfc" id="L183" title="All 2 branches covered.">    for (AssunzioneFarmacoDto farmacoDto : dto.getTerapia().getFarmaci()) {</span>
+<span class="fc" id="L184">      Farmaco farmaco = farmacoDao.findById(farmacoDto.getIdFarmaco()).orElse(null);</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">      if (farmaco != null) {</span>
+<span class="fc" id="L186">        StringBuilder orarioAssunzione = new StringBuilder(farmacoDto.getOrarioAssunzione());</span>
+<span class="fc" id="L187">        int matches = StringUtils.countMatches(orarioAssunzione.toString(), &quot;:&quot;);</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        while (matches &lt; 2) {</span>
+<span class="fc" id="L189">          orarioAssunzione.append(&quot;:00&quot;);</span>
+<span class="fc" id="L190">          matches++;</span>
+        }
+<span class="fc" id="L192">        Time time = Time.valueOf(orarioAssunzione.toString());</span>
+<span class="fc" id="L193">        AssunzioneFarmaco assFarmaco = new AssunzioneFarmaco(farmaco, farmacoDto.getDosaggio(),</span>
+<span class="fc" id="L194">            time, farmacoDto.getViaDiSomministrazione(),</span>
+<span class="fc" id="L195">            farmacoDto.getViaDiSomministrazione());</span>
+<span class="fc" id="L196">        assFarmaco.setTerapia(terapiaEntity);</span>
+<span class="fc" id="L197">        assunzioneFarmacoDao.save(assFarmaco);</span>
+<span class="fc" id="L198">      } else {</span>
+<span class="nc" id="L199">        throw new EntityNotFoundException(&quot;Farmaco non trovato&quot;);</span>
+      }
+<span class="fc" id="L201">    }</span>
+
+    // Check if entity is correctly saved
+<span class="fc" id="L204">    boolean result = pazienteDao.existsById(pazienteEntity.getCodiceFiscale());</span>
+
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">    if (result) {</span>
+<span class="fc" id="L207">      mailService.sendNotification(&quot;Account registrato&quot;,</span>
+<span class="fc" id="L208">          &quot;Ciao &quot; + dto.getNome() + &quot;,\nBenvenut* nella nostra piattaforma, &quot;</span>
+              + &quot;questa è la tua password temporanea: &quot; + randomPassword
+<span class="fc" id="L210">              + &quot;\nTi invitiamo a cambiarla il prima possibile.&quot;, dto.getEmail());</span>
+    }
+
+<span class="fc" id="L213">    return result;</span>
+  }
+
+  @Override
+  public boolean updateTutori(String codiceFiscalePaziente, List&lt;CodiceFiscaleDto&gt; list)
+      throws UserNotFoundException {
+    Paziente result;
+<span class="nc" id="L220">    List&lt;Tutore&gt; nuoviTutori = new ArrayList&lt;&gt;();</span>
+    try {
+<span class="nc" id="L222">      result = pazienteDao.getReferenceById(codiceFiscalePaziente);</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">      for (CodiceFiscaleDto tmp : list) {</span>
+        try {
+<span class="nc" id="L225">          Tutore tutore = tutoreDao.getReferenceById(tmp.getCodiceFiscale());</span>
+<span class="nc" id="L226">          nuoviTutori.add(tutore);</span>
+<span class="nc" id="L227">        } catch (Exception ex) {</span>
+<span class="nc" id="L228">          throw new UserNotFoundException(&quot;Tutore non trovato.&quot;);</span>
+<span class="nc" id="L229">        }</span>
+<span class="nc" id="L230">      }</span>
+<span class="nc" id="L231">    } catch (Exception ex) {</span>
+<span class="nc" id="L232">      throw new UserNotFoundException(&quot;Paziente non trovato.&quot;);</span>
+<span class="nc" id="L233">    }</span>
+<span class="nc" id="L234">    result.getTutori().clear();</span>
+<span class="nc" id="L235">    result.getTutori().addAll(nuoviTutori);</span>
+<span class="nc" id="L236">    pazienteDao.save(result);</span>
+<span class="nc" id="L237">    return true;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

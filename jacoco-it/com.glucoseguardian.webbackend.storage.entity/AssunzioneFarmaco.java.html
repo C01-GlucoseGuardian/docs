@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssunzioneFarmaco.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.entity</a> &gt; <span class="el_source">AssunzioneFarmaco.java</span></div><h1>AssunzioneFarmaco.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.sql.Time;
+import java.util.Objects;
+
+/**
+ * classe entity AssunzioneFarmaco.
+ */
+@Entity
+public class AssunzioneFarmaco implements Serializable {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+  @ManyToOne
+  @JoinColumn(name = &quot;farmaco&quot;)
+  private Farmaco farmaco;
+  @NotNull
+  private String dosaggio;
+  @NotNull
+  private Time orarioAssunzione;
+
+  @Column(length = 300)
+  @NotNull
+  private String viaDiSomministrazione;
+  @Column(length = 300)
+  private String noteAggiuntive;
+  @ManyToOne
+  @JoinColumn(name = &quot;terapia&quot;)
+  private Terapia terapia;
+
+  /**
+   * costruttore entity.
+   */
+  public AssunzioneFarmaco(long id, Farmaco farmaco, String dosaggio, Time orarioAssunzione,
+<span class="nc" id="L45">      String viaDiSomministrazione, String noteAggiuntive) {</span>
+<span class="nc" id="L46">    this.id = id;</span>
+<span class="nc" id="L47">    this.farmaco = farmaco;</span>
+<span class="nc" id="L48">    this.dosaggio = dosaggio;</span>
+<span class="nc" id="L49">    this.orarioAssunzione = orarioAssunzione;</span>
+<span class="nc" id="L50">    this.viaDiSomministrazione = viaDiSomministrazione;</span>
+<span class="nc" id="L51">    this.noteAggiuntive = noteAggiuntive;</span>
+<span class="nc" id="L52">  }</span>
+
+  /**
+   * costruttore entity senza id.
+   */
+  public AssunzioneFarmaco(Farmaco farmaco, String dosaggio, Time orarioAssunzione,
+<span class="fc" id="L58">      String viaDiSomministrazione, String noteAggiuntive) {</span>
+<span class="fc" id="L59">    this.farmaco = farmaco;</span>
+<span class="fc" id="L60">    this.dosaggio = dosaggio;</span>
+<span class="fc" id="L61">    this.orarioAssunzione = orarioAssunzione;</span>
+<span class="fc" id="L62">    this.viaDiSomministrazione = viaDiSomministrazione;</span>
+<span class="fc" id="L63">    this.noteAggiuntive = noteAggiuntive;</span>
+<span class="fc" id="L64">  }</span>
+
+<span class="fc" id="L66">  public AssunzioneFarmaco() {</span>
+
+<span class="fc" id="L68">  }</span>
+
+  @Override
+  public String toString() {
+<span class="nc" id="L72">    return &quot;AssunzioneFarmaco{&quot;</span>
+        + &quot;id=&quot; + id
+        + &quot;, farmaco='&quot; + farmaco + '\''
+        + &quot;, dosaggio=&quot; + dosaggio
+        + &quot;, orario_assunzione=&quot; + orarioAssunzione
+        + &quot;, via_di_somministrazione='&quot; + viaDiSomministrazione + '\''
+        + &quot;, note_aggiuntive='&quot; + noteAggiuntive + '\''
+        + '}';
+  }
+
+  public long getId() {
+<span class="nc" id="L83">    return id;</span>
+  }
+
+  public void setId(long id) {
+<span class="nc" id="L87">    this.id = id;</span>
+<span class="nc" id="L88">  }</span>
+
+  public Farmaco getFarmaco() {
+<span class="nc" id="L91">    return farmaco;</span>
+  }
+
+  public void setFarmaco(Farmaco farmaco) {
+<span class="nc" id="L95">    this.farmaco = farmaco;</span>
+<span class="nc" id="L96">  }</span>
+
+  public String getDosaggio() {
+<span class="nc" id="L99">    return dosaggio;</span>
+  }
+
+  public void setDosaggio(String dosaggio) {
+<span class="nc" id="L103">    this.dosaggio = dosaggio;</span>
+<span class="nc" id="L104">  }</span>
+
+  public Time getOrarioAssunzione() {
+<span class="nc" id="L107">    return orarioAssunzione;</span>
+  }
+
+  public void setOrarioAssunzione(Time orarioAssunzione) {
+<span class="nc" id="L111">    this.orarioAssunzione = orarioAssunzione;</span>
+<span class="nc" id="L112">  }</span>
+
+  public String getViaDiSomministrazione() {
+<span class="nc" id="L115">    return viaDiSomministrazione;</span>
+  }
+
+  public void setViaDiSomministrazione(String viaDiSomministrazione) {
+<span class="nc" id="L119">    this.viaDiSomministrazione = viaDiSomministrazione;</span>
+<span class="nc" id="L120">  }</span>
+
+  public String getNoteAggiuntive() {
+<span class="nc" id="L123">    return noteAggiuntive;</span>
+  }
+
+  public void setNoteAggiuntive(String noteAggiuntive) {
+<span class="nc" id="L127">    this.noteAggiuntive = noteAggiuntive;</span>
+<span class="nc" id="L128">  }</span>
+
+  public Terapia getTerapia() {
+<span class="nc" id="L131">    return terapia;</span>
+  }
+
+  public void setTerapia(Terapia terapia) {
+<span class="fc" id="L135">    this.terapia = terapia;</span>
+<span class="fc" id="L136">  }</span>
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L140" title="All 2 branches missed.">    if (o instanceof AssunzioneFarmaco) {</span>
+<span class="nc" id="L141">      return Objects.equals(id, ((AssunzioneFarmaco) o).id);</span>
+    }
+<span class="nc" id="L143">    return false;</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L148">    return Objects.hash(id);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

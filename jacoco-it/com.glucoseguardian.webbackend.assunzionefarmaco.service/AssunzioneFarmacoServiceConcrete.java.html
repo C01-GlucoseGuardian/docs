@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssunzioneFarmacoServiceConcrete.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.assunzionefarmaco.service</a> &gt; <span class="el_source">AssunzioneFarmacoServiceConcrete.java</span></div><h1>AssunzioneFarmacoServiceConcrete.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.assunzionefarmaco.service;
+
+import com.glucoseguardian.webbackend.exceptions.EntityNotFoundException;
+import com.glucoseguardian.webbackend.storage.dao.AssunzioneFarmacoDao;
+import com.glucoseguardian.webbackend.storage.dto.AssunzioneFarmacoDto;
+import com.glucoseguardian.webbackend.storage.dto.ListDto;
+import com.glucoseguardian.webbackend.storage.entity.AssunzioneFarmaco;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
+/**
+ * This is an implementation of AssunzioneFarmacoServiceInterface.
+ */
+@Service
+@Primary
+<span class="fc" id="L19">public class AssunzioneFarmacoServiceConcrete implements AssunzioneFarmacoServiceInterface {</span>
+
+  @Autowired
+  private AssunzioneFarmacoDao assunzioneFarmacoDao;
+
+  @Override
+  public AssunzioneFarmacoDto findById(Long idAssunzioneFarmaco) throws EntityNotFoundException {
+<span class="nc" id="L26">    AssunzioneFarmaco result = assunzioneFarmacoDao.findById(idAssunzioneFarmaco).orElse(null);</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">    if (result != null) {</span>
+<span class="nc" id="L28">      return AssunzioneFarmacoDto.valueOf(result);</span>
+    } else {
+<span class="nc" id="L30">      throw new EntityNotFoundException(&quot;AssunzioneFarmaco non trovato.&quot;);</span>
+    }
+  }
+
+  @Override
+  public ListDto&lt;AssunzioneFarmacoDto&gt; findByTerapia(Long idTerapia) {
+<span class="nc" id="L36">    List&lt;AssunzioneFarmaco&gt; result = assunzioneFarmacoDao.findByTerapia_Id(idTerapia);</span>
+<span class="nc" id="L37">    List&lt;AssunzioneFarmacoDto&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">    for (AssunzioneFarmaco assunzioneFarmaco : result) {</span>
+<span class="nc" id="L39">      list.add(AssunzioneFarmacoDto.valueOf(assunzioneFarmaco));</span>
+<span class="nc" id="L40">    }</span>
+<span class="nc" id="L41">    ListDto&lt;AssunzioneFarmacoDto&gt; listDto = new ListDto&lt;&gt;(list);</span>
+<span class="nc" id="L42">    return listDto;</span>
+  }
+
+  @Override
+  public ListDto&lt;AssunzioneFarmacoDto&gt; findByPaziente(String codiceFiscalePaziente) {
+<span class="nc" id="L47">    List&lt;AssunzioneFarmaco&gt; result = assunzioneFarmacoDao.findByTerapia_Paziente_CodiceFiscale(</span>
+        codiceFiscalePaziente);
+<span class="nc" id="L49">    List&lt;AssunzioneFarmacoDto&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">    for (AssunzioneFarmaco assunzioneFarmaco : result) {</span>
+<span class="nc" id="L51">      list.add(AssunzioneFarmacoDto.valueOf(assunzioneFarmaco));</span>
+<span class="nc" id="L52">    }</span>
+<span class="nc" id="L53">    ListDto&lt;AssunzioneFarmacoDto&gt; listDto = new ListDto&lt;&gt;(list);</span>
+<span class="nc" id="L54">    return listDto;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TutoreDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.dto</a> &gt; <span class="el_source">TutoreDto.java</span></div><h1>TutoreDto.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.glucoseguardian.webbackend.storage.entity.Paziente;
+import com.glucoseguardian.webbackend.storage.entity.Tutore;
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Rappresenta l'output dell'entità tutore.
+ */
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
+public class TutoreDto extends RisultatoDto implements Serializable {
+
+  private String codiceFiscale;
+  private String nome;
+  private String cognome;
+  private String dataNascita;
+  private String indirizzo;
+  private String telefono;
+  private String email;
+  private String sesso;
+  private List&lt;PazienteDto&gt; pazienteList;
+
+<span class="fc" id="L31">  public TutoreDto() {</span>
+<span class="fc" id="L32">  }</span>
+
+  /**
+   * Construttore predefinito di TutoreDto.
+   */
+  public TutoreDto(String codiceFiscale, String nome, String cognome, String dataNascita,
+      String indirizzo, String telefono, String email, String sesso,
+<span class="nc" id="L39">      List&lt;PazienteDto&gt; pazienteList) {</span>
+<span class="nc" id="L40">    this.codiceFiscale = codiceFiscale;</span>
+<span class="nc" id="L41">    this.nome = nome;</span>
+<span class="nc" id="L42">    this.cognome = cognome;</span>
+<span class="nc" id="L43">    this.dataNascita = dataNascita;</span>
+<span class="nc" id="L44">    this.indirizzo = indirizzo;</span>
+<span class="nc" id="L45">    this.telefono = telefono;</span>
+<span class="nc" id="L46">    this.email = email;</span>
+<span class="nc" id="L47">    this.sesso = sesso;</span>
+<span class="nc" id="L48">    this.pazienteList = pazienteList;</span>
+<span class="nc" id="L49">  }</span>
+
+  public String getCodiceFiscale() {
+<span class="fc" id="L52">    return codiceFiscale;</span>
+  }
+
+  public void setCodiceFiscale(String codiceFiscale) {
+<span class="fc" id="L56">    this.codiceFiscale = codiceFiscale;</span>
+<span class="fc" id="L57">  }</span>
+
+  public String getNome() {
+<span class="fc" id="L60">    return nome;</span>
+  }
+
+  public void setNome(String nome) {
+<span class="fc" id="L64">    this.nome = nome;</span>
+<span class="fc" id="L65">  }</span>
+
+  public String getCognome() {
+<span class="fc" id="L68">    return cognome;</span>
+  }
+
+  public void setCognome(String cognome) {
+<span class="fc" id="L72">    this.cognome = cognome;</span>
+<span class="fc" id="L73">  }</span>
+
+  public String getDataNascita() {
+<span class="fc" id="L76">    return dataNascita;</span>
+  }
+
+  public void setDataNascita(String dataNascita) {
+<span class="fc" id="L80">    this.dataNascita = dataNascita;</span>
+<span class="fc" id="L81">  }</span>
+
+  public String getIndirizzo() {
+<span class="fc" id="L84">    return indirizzo;</span>
+  }
+
+  public void setIndirizzo(String indirizzo) {
+<span class="fc" id="L88">    this.indirizzo = indirizzo;</span>
+<span class="fc" id="L89">  }</span>
+
+  public String getTelefono() {
+<span class="fc" id="L92">    return telefono;</span>
+  }
+
+  public void setTelefono(String telefono) {
+<span class="fc" id="L96">    this.telefono = telefono;</span>
+<span class="fc" id="L97">  }</span>
+
+  public String getEmail() {
+<span class="fc" id="L100">    return email;</span>
+  }
+
+  public void setEmail(String email) {
+<span class="fc" id="L104">    this.email = email;</span>
+<span class="fc" id="L105">  }</span>
+
+  public String getSesso() {
+<span class="fc" id="L108">    return sesso;</span>
+  }
+
+  public void setSesso(String sesso) {
+<span class="fc" id="L112">    this.sesso = sesso;</span>
+<span class="fc" id="L113">  }</span>
+
+  public List&lt;PazienteDto&gt; getPazienteList() {
+<span class="fc" id="L116">    return pazienteList;</span>
+  }
+
+  public void setPazienteList(List&lt;PazienteDto&gt; pazienteList) {
+<span class="nc" id="L120">    this.pazienteList = pazienteList;</span>
+<span class="nc" id="L121">  }</span>
+
+  /**
+   * Costruisce un TutoreDto a partire da un {@link Tutore}, il campo password non viene popolato.
+   */
+  public static TutoreDto valueOf(Tutore tutore) {
+<span class="nc" id="L127">    List&lt;PazienteDto&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">    for (Paziente paziente : tutore.getPazienteList()) {</span>
+<span class="nc" id="L129">      list.add(PazienteDto.valueOf(paziente));</span>
+<span class="nc" id="L130">    }</span>
+<span class="nc" id="L131">    TutoreDto tutoreDto = new TutoreDto();</span>
+<span class="nc" id="L132">    tutoreDto.setCodiceFiscale(tutore.getCodiceFiscale());</span>
+<span class="nc" id="L133">    tutoreDto.setNome(tutore.getNome());</span>
+<span class="nc" id="L134">    tutoreDto.setCognome(tutore.getCognome());</span>
+<span class="nc" id="L135">    tutoreDto.setIndirizzo(tutore.getIndirizzo());</span>
+<span class="nc" id="L136">    tutoreDto.setTelefono(tutore.getTelefono());</span>
+<span class="nc" id="L137">    tutoreDto.setEmail(tutore.getEmail());</span>
+<span class="nc" id="L138">    tutoreDto.setSesso(tutore.getSesso() + &quot;&quot;);</span>
+<span class="nc" id="L139">    tutoreDto.setPazienteList(list);</span>
+
+<span class="nc" id="L141">    DateFormat dateFormat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="nc" id="L142">    String dataNascitaPazienteDto = dateFormat.format(tutore.getDataNascita());</span>
+<span class="nc" id="L143">    tutoreDto.setDataNascita(dataNascitaPazienteDto);</span>
+
+<span class="nc" id="L145">    return tutoreDto;</span>
+  }
+
+  /**
+   *  validazione del tutore.
+   */
+  public void validate() throws IllegalArgumentException {
+<span class="fc" id="L152">    Validate.notNull(codiceFiscale, &quot;Il codice fiscale non può essere vuoto&quot;);</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">    Validate.isTrue(codiceFiscale.length() == 16,</span>
+        &quot;La lunghezza del codice fiscale deve essere di 16 caratteri&quot;);
+
+<span class="fc" id="L156">    Validate.notNull(nome, &quot;Il nome non puo essere vuoto&quot;);</span>
+<span class="pc bpc" id="L157" title="1 of 4 branches missed.">    Validate.isTrue(nome.length() &lt;= 30 &amp;&amp; nome.length() &gt; 3,</span>
+        &quot;La lunghezza del nome non è valida&quot;);
+
+<span class="fc" id="L160">    Validate.notNull(cognome, &quot;Il cognome non può essere vuoto&quot;);</span>
+<span class="pc bpc" id="L161" title="1 of 4 branches missed.">    Validate.isTrue(cognome.length() &lt;= 30 &amp;&amp; cognome.length() &gt; 2,</span>
+        &quot;La lunghezza del cognome non è valida&quot;);
+
+<span class="fc" id="L164">    Validate.notNull(sesso, &quot;il sesso non puo' essere vuoto&quot;);</span>
+<span class="fc" id="L165">    Pattern pattern = Pattern.compile(&quot;^M|F$&quot;);</span>
+<span class="fc" id="L166">    Validate.isTrue(pattern.matcher(sesso).matches(), &quot;il sesso non è valido&quot;);</span>
+
+<span class="fc" id="L168">    Validate.notNull(dataNascita, &quot;la data di nascita non puo essere vuota&quot;);</span>
+<span class="fc" id="L169">    Pattern pattern1 = Pattern.compile(</span>
+        &quot;^(0[1-9]|[1-2]\\d|3[01])\\/(0[1-9]|1[0-2])\\/\\d\\d\\d\\d$&quot;);
+<span class="fc" id="L171">    Validate.isTrue(pattern1.matcher(dataNascita).matches(),</span>
+        &quot;la data nascita inserita non è valida&quot;);
+<span class="fc" id="L173">    SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+    try {
+<span class="fc" id="L175">      long diff = dateFormat.parse(dataNascita).getTime() - new java.util.Date().getTime();</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">      Validate.isTrue(diff &lt; 0, &quot;La data di nascita è nel futuro&quot;);</span>
+<span class="nc" id="L177">    } catch (ParseException ex) {</span>
+<span class="nc" id="L178">      throw new IllegalArgumentException(&quot;la data nascita inserita non è valida&quot;);</span>
+<span class="fc" id="L179">    }</span>
+
+
+<span class="fc" id="L182">    Validate.notNull(email, &quot;la mail non puo essere assente&quot;);</span>
+<span class="fc" id="L183">    Pattern pattern2 = Pattern.compile(&quot;^[a-zA-Z0-9.!#$%&amp;’*+/=?^_`{}~-]+@(?:[a-zA-Z0-9-\\.]+)\\w$&quot;);</span>
+<span class="fc" id="L184">    Validate.isTrue(pattern2.matcher(email).matches(), &quot;L'email non è valida&quot;);</span>
+
+<span class="fc" id="L186">    Validate.notNull(telefono, &quot;telefono non puo essere assente&quot;);</span>
+<span class="fc" id="L187">    Pattern pattern3 = Pattern.compile(&quot;^\\+?\\d{5,15}$&quot;);</span>
+<span class="fc" id="L188">    Validate.isTrue(pattern3.matcher(telefono).matches(),</span>
+        &quot;il campo numero di telefono non rispetta il formato&quot;);
+
+<span class="fc" id="L191">    Validate.notNull(indirizzo, &quot;l'indirizzo non puo' essere vuoto&quot;);</span>
+<span class="pc bpc" id="L192" title="1 of 4 branches missed.">    Validate.isTrue(indirizzo.length() &lt;= 50 &amp;&amp; indirizzo.length() &gt;= 4,</span>
+        &quot;La lunghezza dell'indirizzo non è valida&quot;);
+<span class="fc" id="L194">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

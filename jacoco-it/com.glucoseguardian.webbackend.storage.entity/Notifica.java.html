@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Notifica.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.entity</a> &gt; <span class="el_source">Notifica.java</span></div><h1>Notifica.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Time;
+import java.util.Objects;
+
+/**
+ * Questa classe rappresenta l'entity notifica.
+ */
+@Entity
+public class Notifica implements Serializable {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+
+  @Column(length = 1024)
+  @NotNull
+  private String messaggio;
+
+  @NotNull
+  private Date data;
+
+  @NotNull
+  private Time ora;
+
+<span class="pc" id="L36">  private int stato = 0;</span>
+  @ManyToOne
+  @JoinColumn(name = &quot;pazienteOggetto&quot;)
+  private Paziente pazienteOggetto;
+
+  @ManyToOne
+  @JoinColumn(name = &quot;pazienteDestinatario&quot;)
+  private Paziente pazienteDestinatario;
+
+  @ManyToOne
+  @JoinColumn(name = &quot;dottoreDestinatario&quot;)
+  private Dottore dottoreDestinatario;
+
+  @ManyToOne
+  @JoinColumn(name = &quot;tutoreDestinatario&quot;)
+  private Tutore tutoreDestinatario;
+
+  @ManyToOne
+  @JoinColumn(name = &quot;adminDestinatario&quot;)
+  private Admin adminDestinatario;
+
+<span class="fc" id="L57">  public Notifica() {</span>
+
+<span class="fc" id="L59">  }</span>
+
+  /**
+   * Costruttore predefinito dell'entity Notifica.
+   */
+<span class="fc" id="L64">  public Notifica(String messaggio, Date data, Time ora, int stato) {</span>
+<span class="fc" id="L65">    this.messaggio = messaggio;</span>
+<span class="fc" id="L66">    this.data = data;</span>
+<span class="fc" id="L67">    this.ora = ora;</span>
+<span class="fc" id="L68">    this.stato = stato;</span>
+<span class="fc" id="L69">  }</span>
+  /**
+   * Questo è il costruttore della entity Notifica.
+   */
+
+  public Notifica(long id, String messaggio, Date data, Time ora, int stato,
+      Paziente pazienteOggetto, Paziente pazienteDestinatario, Dottore dottoreDestinatario,
+<span class="nc" id="L76">      Tutore tutoreDestinatario, Admin adminDestinatario) {</span>
+<span class="nc" id="L77">    this.id = id;</span>
+<span class="nc" id="L78">    this.messaggio = messaggio;</span>
+<span class="nc" id="L79">    this.data = data;</span>
+<span class="nc" id="L80">    this.ora = ora;</span>
+<span class="nc" id="L81">    this.stato = stato;</span>
+<span class="nc" id="L82">    this.pazienteOggetto = pazienteOggetto;</span>
+<span class="nc" id="L83">    this.pazienteDestinatario = pazienteDestinatario;</span>
+<span class="nc" id="L84">    this.dottoreDestinatario = dottoreDestinatario;</span>
+<span class="nc" id="L85">    this.tutoreDestinatario = tutoreDestinatario;</span>
+<span class="nc" id="L86">    this.adminDestinatario = adminDestinatario;</span>
+<span class="nc" id="L87">  }</span>
+
+  @Override
+  public String toString() {
+<span class="nc" id="L91">    return &quot;Notifica{&quot;</span>
+        + &quot;id=&quot; + id
+        + &quot;, messaggio='&quot; + messaggio + '\''
+        + &quot;, data=&quot; + data
+        + &quot;, ora=&quot; + ora + &quot;, stato=&quot; + stato
+        + '}';
+  }
+
+  public long getId() {
+<span class="fc" id="L100">    return id;</span>
+  }
+
+  public void setId(long id) {
+<span class="fc" id="L104">    this.id = id;</span>
+<span class="fc" id="L105">  }</span>
+
+  public String getMessaggio() {
+<span class="fc" id="L108">    return messaggio;</span>
+  }
+
+  public void setMessaggio(String messaggio) {
+<span class="fc" id="L112">    this.messaggio = messaggio;</span>
+<span class="fc" id="L113">  }</span>
+
+  public Date getData() {
+<span class="fc" id="L116">    return data;</span>
+  }
+
+  public void setData(Date data) {
+<span class="fc" id="L120">    this.data = data;</span>
+<span class="fc" id="L121">  }</span>
+
+  public Time getOra() {
+<span class="fc" id="L124">    return ora;</span>
+  }
+
+  public void setOra(Time ora) {
+<span class="fc" id="L128">    this.ora = ora;</span>
+<span class="fc" id="L129">  }</span>
+
+  public int getStato() {
+<span class="fc" id="L132">    return stato;</span>
+  }
+
+  public void setStato(int stato) {
+<span class="fc" id="L136">    this.stato = stato;</span>
+<span class="fc" id="L137">  }</span>
+
+  public Paziente getPazienteOggetto() {
+<span class="fc" id="L140">    return pazienteOggetto;</span>
+  }
+
+  public void setPazienteOggetto(Paziente pazienteOggetto) {
+<span class="fc" id="L144">    this.pazienteOggetto = pazienteOggetto;</span>
+<span class="fc" id="L145">  }</span>
+
+  public Paziente getPazienteDestinatario() {
+<span class="fc" id="L148">    return pazienteDestinatario;</span>
+  }
+
+  public void setPazienteDestinatario(
+      Paziente pazienteDestinatario) {
+<span class="fc" id="L153">    this.pazienteDestinatario = pazienteDestinatario;</span>
+<span class="fc" id="L154">  }</span>
+
+  public Dottore getDottoreDestinatario() {
+<span class="fc" id="L157">    return dottoreDestinatario;</span>
+  }
+
+  public void setDottoreDestinatario(
+      Dottore dottoreDestinatario) {
+<span class="fc" id="L162">    this.dottoreDestinatario = dottoreDestinatario;</span>
+<span class="fc" id="L163">  }</span>
+
+  public Tutore getTutoreDestinatario() {
+<span class="fc" id="L166">    return tutoreDestinatario;</span>
+  }
+
+  public void setTutoreDestinatario(
+      Tutore tutoreDestinatario) {
+<span class="nc" id="L171">    this.tutoreDestinatario = tutoreDestinatario;</span>
+<span class="nc" id="L172">  }</span>
+
+  public Admin getAdminDestinatario() {
+<span class="fc" id="L175">    return adminDestinatario;</span>
+  }
+
+  public void setAdminDestinatario(Admin adminDestinatario) {
+<span class="nc" id="L179">    this.adminDestinatario = adminDestinatario;</span>
+<span class="nc" id="L180">  }</span>
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L184" title="All 2 branches missed.">    if (o instanceof Notifica) {</span>
+<span class="nc" id="L185">      return Objects.equals(id, ((Notifica) o).id);</span>
+    }
+<span class="nc" id="L187">    return false;</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L192">    return Objects.hash(id);</span>
+  }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Dottore.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.entity</a> &gt; <span class="el_source">Dottore.java</span></div><h1>Dottore.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.entity;
+
+
+import jakarta.annotation.Nullable;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.sql.Date;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+/**
+ * Classe che rappresenta un'istanza dell'entity Dottore.
+ */
+@Entity
+public class Dottore implements Serializable, Utente {
+
+  @Id
+  @Column(length = 16)
+  @NotNull
+  private String codiceFiscale;
+  @Column(length = 30)
+  @NotNull
+  private String nome;
+  @Column(length = 30)
+  @NotNull
+  private String cognome;
+  @NotNull
+  private Date dataNascita;
+  @Column(length = 50)
+  @NotNull
+  private String indirizzo;
+  @Column(length = 15)
+  @NotNull
+  private String telefono;
+  @Column(unique = true)
+  @NotNull
+  private String email;
+  @NotNull
+  private String password;
+
+  private char sesso;
+  @Nullable
+  private String totpKey;
+  @Column(length = 100)
+  @NotNull
+  private String specializzazione;
+  @Column(length = 50)
+  @NotNull
+  private String codiceAlbo;
+  @Column(length = 100)
+  @NotNull
+  private String nomeStruttura;
+  @Column(length = 100)
+  @NotNull
+  private String indirizzoStruttura;
+<span class="fc" id="L67">  private int stato = 0;</span>
+  @OneToMany(mappedBy = &quot;dottore&quot;, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List&lt;Feedback&gt; feedbacks;
+  @OneToMany(mappedBy = &quot;dottore&quot;, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List&lt;Paziente&gt; pazientes;
+  @OneToMany(mappedBy = &quot;dottore&quot;, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List&lt;Terapia&gt; terapias;
+  @OneToMany(mappedBy = &quot;dottoreDestinatario&quot;, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List&lt;Notifica&gt; notificas;
+  @ManyToOne
+  @JoinColumn(name = &quot;convalidatoDa&quot;)
+  private Admin convalidatoDa;
+
+  /**
+   * Costruttore predefinito della classe Dottore.
+   */
+  public Dottore(String codiceFiscale, String nome, String cognome, Date dataNascita,
+      String indirizzo, String telefono, String email, String password, char sesso, String totpKey,
+      String specializzazione, String codiceAlbo, String nomeStruttura, String indirizzoStruttura,
+<span class="fc" id="L86">      int stato) {</span>
+<span class="fc" id="L87">    this.codiceFiscale = codiceFiscale;</span>
+<span class="fc" id="L88">    this.nome = nome;</span>
+<span class="fc" id="L89">    this.cognome = cognome;</span>
+<span class="fc" id="L90">    this.dataNascita = dataNascita;</span>
+<span class="fc" id="L91">    this.indirizzo = indirizzo;</span>
+<span class="fc" id="L92">    this.telefono = telefono;</span>
+<span class="fc" id="L93">    this.email = email;</span>
+<span class="fc" id="L94">    this.password = password;</span>
+<span class="fc" id="L95">    this.sesso = sesso;</span>
+<span class="fc" id="L96">    this.totpKey = totpKey;</span>
+<span class="fc" id="L97">    this.specializzazione = specializzazione;</span>
+<span class="fc" id="L98">    this.codiceAlbo = codiceAlbo;</span>
+<span class="fc" id="L99">    this.nomeStruttura = nomeStruttura;</span>
+<span class="fc" id="L100">    this.indirizzoStruttura = indirizzoStruttura;</span>
+<span class="fc" id="L101">    this.stato = stato;</span>
+<span class="fc" id="L102">  }</span>
+
+<span class="fc" id="L104">  public Dottore() {</span>
+<span class="fc" id="L105">  }</span>
+
+  public String getCodiceFiscale() {
+<span class="fc" id="L108">    return codiceFiscale;</span>
+  }
+
+  public void setCodiceFiscale(String codiceFiscale) {
+<span class="fc" id="L112">    this.codiceFiscale = codiceFiscale;</span>
+<span class="fc" id="L113">  }</span>
+
+  public String getNome() {
+<span class="nc" id="L116">    return nome;</span>
+  }
+
+  public void setNome(String nome) {
+<span class="nc" id="L120">    this.nome = nome;</span>
+<span class="nc" id="L121">  }</span>
+
+  public String getCognome() {
+<span class="nc" id="L124">    return cognome;</span>
+  }
+
+  public void setCognome(String cognome) {
+<span class="nc" id="L128">    this.cognome = cognome;</span>
+<span class="nc" id="L129">  }</span>
+
+  public Date getDataNascita() {
+<span class="nc" id="L132">    return dataNascita;</span>
+  }
+
+  public void setDataNascita(Date dataNascita) {
+<span class="nc" id="L136">    this.dataNascita = dataNascita;</span>
+<span class="nc" id="L137">  }</span>
+
+  public String getIndirizzo() {
+<span class="nc" id="L140">    return indirizzo;</span>
+  }
+
+  public void setIndirizzo(String indirizzo) {
+<span class="nc" id="L144">    this.indirizzo = indirizzo;</span>
+<span class="nc" id="L145">  }</span>
+
+  public String getTelefono() {
+<span class="nc" id="L148">    return telefono;</span>
+  }
+
+  public void setTelefono(String telefono) {
+<span class="nc" id="L152">    this.telefono = telefono;</span>
+<span class="nc" id="L153">  }</span>
+
+  public String getEmail() {
+<span class="fc" id="L156">    return email;</span>
+  }
+
+  public void setEmail(String email) {
+<span class="fc" id="L160">    this.email = email;</span>
+<span class="fc" id="L161">  }</span>
+
+  public String getPassword() {
+<span class="fc" id="L164">    return password;</span>
+  }
+
+  public void setPassword(String password) {
+<span class="fc" id="L168">    this.password = password;</span>
+<span class="fc" id="L169">  }</span>
+
+  public char getSesso() {
+<span class="nc" id="L172">    return sesso;</span>
+  }
+
+  public void setSesso(char sesso) {
+<span class="nc" id="L176">    this.sesso = sesso;</span>
+<span class="nc" id="L177">  }</span>
+
+  public String getTotpKey() {
+<span class="fc" id="L180">    return totpKey;</span>
+  }
+
+  public void setTotpKey(String totpKey) {
+<span class="nc" id="L184">    this.totpKey = totpKey;</span>
+<span class="nc" id="L185">  }</span>
+
+  public String getSpecializzazione() {
+<span class="nc" id="L188">    return specializzazione;</span>
+  }
+
+  public void setSpecializzazione(String specializzazione) {
+<span class="nc" id="L192">    this.specializzazione = specializzazione;</span>
+<span class="nc" id="L193">  }</span>
+
+  public String getCodiceAlbo() {
+<span class="nc" id="L196">    return codiceAlbo;</span>
+  }
+
+  public void setCodiceAlbo(String codiceAlbo) {
+<span class="nc" id="L200">    this.codiceAlbo = codiceAlbo;</span>
+<span class="nc" id="L201">  }</span>
+
+  public String getNomeStruttura() {
+<span class="nc" id="L204">    return nomeStruttura;</span>
+  }
+
+  public void setNomeStruttura(String nomeStruttura) {
+<span class="nc" id="L208">    this.nomeStruttura = nomeStruttura;</span>
+<span class="nc" id="L209">  }</span>
+
+  public String getIndirizzoStruttura() {
+<span class="nc" id="L212">    return indirizzoStruttura;</span>
+  }
+
+  public void setIndirizzoStruttura(String indirizzoStruttura) {
+<span class="nc" id="L216">    this.indirizzoStruttura = indirizzoStruttura;</span>
+<span class="nc" id="L217">  }</span>
+
+  public int getStato() {
+<span class="nc" id="L220">    return stato;</span>
+  }
+
+  public void setStato(int stato) {
+<span class="fc" id="L224">    this.stato = stato;</span>
+<span class="fc" id="L225">  }</span>
+
+  public List&lt;Feedback&gt; getFeedbacks() {
+<span class="nc" id="L228">    return feedbacks;</span>
+  }
+
+  public void setFeedbacks(
+      List&lt;Feedback&gt; feedbacks) {
+<span class="nc" id="L233">    this.feedbacks = feedbacks;</span>
+<span class="nc" id="L234">  }</span>
+
+  public List&lt;Paziente&gt; getPazientes() {
+<span class="nc" id="L237">    return pazientes;</span>
+  }
+
+  public void setPazientes(
+      List&lt;Paziente&gt; pazientes) {
+<span class="nc" id="L242">    this.pazientes = pazientes;</span>
+<span class="nc" id="L243">  }</span>
+
+  public List&lt;Terapia&gt; getTerapias() {
+<span class="nc" id="L246">    return terapias;</span>
+  }
+
+  public void setTerapias(List&lt;Terapia&gt; terapias) {
+<span class="nc" id="L250">    this.terapias = terapias;</span>
+<span class="nc" id="L251">  }</span>
+
+  public List&lt;Notifica&gt; getNotifiche() {
+<span class="fc" id="L254">    return notificas;</span>
+  }
+
+  public void setNotifiche(
+      List&lt;Notifica&gt; notificas) {
+<span class="fc" id="L259">    this.notificas = notificas;</span>
+<span class="fc" id="L260">  }</span>
+
+  public Admin getConvalidatoDa() {
+<span class="nc" id="L263">    return convalidatoDa;</span>
+  }
+
+  public void setConvalidatoDa(Admin convalidatoDa) {
+<span class="fc" id="L267">    this.convalidatoDa = convalidatoDa;</span>
+<span class="fc" id="L268">  }</span>
+
+  @Override
+  public boolean equals(Object o) {
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">    if (o instanceof Dottore) {</span>
+<span class="fc" id="L273">      return Objects.equals(codiceFiscale, ((Dottore) o).codiceFiscale);</span>
+    }
+<span class="nc" id="L275">    return false;</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L280">    return Objects.hash(codiceFiscale);</span>
+  }
+
+  @Override
+  public TipoUtente getTipoUtente() {
+<span class="fc" id="L285">    return TipoUtente.DOTTORE;</span>
+  }
+
+  @Override
+  public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
+<span class="fc" id="L290">    return List.of(new SimpleGrantedAuthority(getTipoUtente().name()));</span>
+  }
+
+  @Override
+  public String getUsername() {
+<span class="fc" id="L295">    return email;</span>
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+<span class="nc" id="L300">    return true;</span>
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+<span class="nc" id="L305">    return true;</span>
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+<span class="nc" id="L310">    return true;</span>
+  }
+
+  @Override
+  public boolean isEnabled() {
+<span class="fc bfc" id="L315" title="All 2 branches covered.">    return stato == 1;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlicemiaInputDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.dto</a> &gt; <span class="el_source">GlicemiaInputDto.java</span></div><h1>GlicemiaInputDto.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import java.io.Serializable;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Rappresenta l'input dell'entità glicemia.
+ */
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
+public class GlicemiaInputDto extends RisultatoDto implements Serializable {
+
+  private String idPaziente;
+  private Long start;
+
+  private Long end;
+
+<span class="nc" id="L18">  public GlicemiaInputDto() {</span>
+<span class="nc" id="L19">  }</span>
+
+  /**
+   * Costruttore di default di glicemia input dto.
+   */
+<span class="nc" id="L24">  public GlicemiaInputDto(String idPaziente, Long start, Long end) {</span>
+<span class="nc" id="L25">    this.idPaziente = idPaziente;</span>
+<span class="nc" id="L26">    this.start = start;</span>
+<span class="nc" id="L27">    this.end = end;</span>
+<span class="nc" id="L28">  }</span>
+
+  public String getIdPaziente() {
+<span class="nc" id="L31">    return idPaziente;</span>
+  }
+
+  public void setIdPaziente(String idPaziente) {
+<span class="nc" id="L35">    this.idPaziente = idPaziente;</span>
+<span class="nc" id="L36">  }</span>
+
+  public Long getStart() {
+<span class="nc" id="L39">    return start;</span>
+  }
+
+  public void setStart(Long start) {
+<span class="nc" id="L43">    this.start = start;</span>
+<span class="nc" id="L44">  }</span>
+
+  public Long getEnd() {
+<span class="nc" id="L47">    return end;</span>
+  }
+
+  public void setEnd(Long end) {
+<span class="nc" id="L51">    this.end = end;</span>
+<span class="nc" id="L52">  }</span>
+
+  /**
+   *  validazione del codice fiscale del paziente.
+   */
+  public void validateIdPaziente() {
+<span class="nc" id="L58">    Validate.notNull(idPaziente, &quot;il codice fiscale del paziente non può essere vuoto&quot;);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">    Validate.isTrue(idPaziente.length() == 16,</span>
+        &quot;il codice fiscale del paziente è di lunghezza errata&quot;);
+<span class="nc" id="L61">  }</span>
+
+  /**
+   *  validazione del range.
+   */
+
+  public void validateRange() {
+<span class="nc" id="L68">    Validate.notNull(idPaziente, &quot;il codice fiscale del paziente non può essere vuoto&quot;);</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">    Validate.isTrue(idPaziente.length() == 16,</span>
+        &quot;il codice fiscale del paziente è di lunghezza errata&quot;);
+<span class="nc" id="L71">    Validate.notNull(start, &quot;start non può essere vuoto&quot;);</span>
+<span class="nc" id="L72">    Validate.notNull(end, &quot;end non può essere vuoto&quot;);</span>
+<span class="nc" id="L73">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

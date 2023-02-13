@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DottoreDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.dto</a> &gt; <span class="el_source">DottoreDto.java</span></div><h1>DottoreDto.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.glucoseguardian.webbackend.storage.entity.Dottore;
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.regex.Pattern;
+import org.apache.commons.lang3.Validate;
+
+/**
+ * Rappresenta l'entity dottore.
+ */
+@JsonInclude(Include.NON_ABSENT)
+public class DottoreDto extends RisultatoDto implements Serializable {
+
+  private String codiceFiscale;
+  private String nome;
+  private String cognome;
+  private String dataNascita;
+  private String indirizzo;
+  private String telefono;
+  private String email;
+  private String password;
+  private String sesso;
+  private String specializzazione;
+  private String codiceAlbo;
+  private String nomeStruttura;
+  private String indirizzoStruttura;
+  private Integer stato;
+
+  /**
+   * Costruttore completo.
+   */
+  public DottoreDto(String codiceFiscale, String nome, String cognome, String dataNascita,
+      String indirizzo, String telefono, String email, String password, String sesso,
+      String specializzazione, String codiceAlbo, String nomeStruttura, String indirizzoStruttura,
+<span class="nc" id="L40">      Integer stato) {</span>
+<span class="nc" id="L41">    this.codiceFiscale = codiceFiscale;</span>
+<span class="nc" id="L42">    this.nome = nome;</span>
+<span class="nc" id="L43">    this.cognome = cognome;</span>
+<span class="nc" id="L44">    this.dataNascita = dataNascita;</span>
+<span class="nc" id="L45">    this.indirizzo = indirizzo;</span>
+<span class="nc" id="L46">    this.telefono = telefono;</span>
+<span class="nc" id="L47">    this.email = email;</span>
+<span class="nc" id="L48">    this.password = password;</span>
+<span class="nc" id="L49">    this.sesso = sesso;</span>
+<span class="nc" id="L50">    this.specializzazione = specializzazione;</span>
+<span class="nc" id="L51">    this.codiceAlbo = codiceAlbo;</span>
+<span class="nc" id="L52">    this.nomeStruttura = nomeStruttura;</span>
+<span class="nc" id="L53">    this.indirizzoStruttura = indirizzoStruttura;</span>
+<span class="nc" id="L54">    this.stato = stato;</span>
+<span class="nc" id="L55">  }</span>
+
+  /**
+   * Costruttore di Dottore DTO senza password.
+   */
+  public DottoreDto(String codiceFiscale, String nome, String cognome, String dataNascita,
+      String indirizzo, String telefono, String email, String sesso, String specializzazione,
+<span class="nc" id="L62">      String codiceAlbo, String nomeStruttura, String indirizzoStruttura, Integer stato) {</span>
+<span class="nc" id="L63">    this.codiceFiscale = codiceFiscale;</span>
+<span class="nc" id="L64">    this.nome = nome;</span>
+<span class="nc" id="L65">    this.cognome = cognome;</span>
+<span class="nc" id="L66">    this.dataNascita = dataNascita;</span>
+<span class="nc" id="L67">    this.indirizzo = indirizzo;</span>
+<span class="nc" id="L68">    this.telefono = telefono;</span>
+<span class="nc" id="L69">    this.email = email;</span>
+<span class="nc" id="L70">    this.sesso = sesso;</span>
+<span class="nc" id="L71">    this.specializzazione = specializzazione;</span>
+<span class="nc" id="L72">    this.codiceAlbo = codiceAlbo;</span>
+<span class="nc" id="L73">    this.nomeStruttura = nomeStruttura;</span>
+<span class="nc" id="L74">    this.indirizzoStruttura = indirizzoStruttura;</span>
+<span class="nc" id="L75">    this.stato = stato;</span>
+<span class="nc" id="L76">  }</span>
+
+
+<span class="fc" id="L79">  public DottoreDto() {</span>
+<span class="fc" id="L80">  }</span>
+
+  /**
+   * Costruisce un DottoreDto a partire da un {@link Dottore}. Il campo password non viene
+   * popolato.
+   */
+  public static DottoreDto valueOf(Dottore dottore) {
+<span class="nc" id="L87">    DateFormat dateFormat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+<span class="nc" id="L88">    String dataNascitaDottoreDto = dateFormat.format(dottore.getDataNascita());</span>
+<span class="nc" id="L89">    DottoreDto dottoreDto = new DottoreDto();</span>
+
+<span class="nc" id="L91">    dottoreDto.setCodiceFiscale(dottore.getCodiceFiscale());</span>
+<span class="nc" id="L92">    dottoreDto.setNome(dottore.getNome());</span>
+<span class="nc" id="L93">    dottoreDto.setCognome(dottore.getCognome());</span>
+<span class="nc" id="L94">    dottoreDto.setDataNascita(dataNascitaDottoreDto);</span>
+<span class="nc" id="L95">    dottoreDto.setIndirizzo(dottore.getIndirizzo());</span>
+<span class="nc" id="L96">    dottoreDto.setTelefono(dottore.getTelefono());</span>
+<span class="nc" id="L97">    dottoreDto.setEmail(dottore.getEmail());</span>
+<span class="nc" id="L98">    dottoreDto.setSesso(dottore.getSesso() + &quot;&quot;);</span>
+<span class="nc" id="L99">    dottoreDto.setSpecializzazione(dottore.getSpecializzazione());</span>
+<span class="nc" id="L100">    dottoreDto.setCodiceAlbo(dottore.getCodiceAlbo());</span>
+<span class="nc" id="L101">    dottoreDto.setNomeStruttura(dottore.getNomeStruttura());</span>
+<span class="nc" id="L102">    dottoreDto.setIndirizzoStruttura(dottore.getIndirizzoStruttura());</span>
+<span class="nc" id="L103">    dottoreDto.setStato(dottore.getStato());</span>
+<span class="nc" id="L104">    return dottoreDto;</span>
+  }
+
+  public String getCodiceFiscale() {
+<span class="fc" id="L108">    return codiceFiscale;</span>
+  }
+
+  public void setCodiceFiscale(String codiceFiscale) {
+<span class="fc" id="L112">    this.codiceFiscale = codiceFiscale;</span>
+<span class="fc" id="L113">  }</span>
+
+  public String getNome() {
+<span class="fc" id="L116">    return nome;</span>
+  }
+
+  public void setNome(String nome) {
+<span class="fc" id="L120">    this.nome = nome;</span>
+<span class="fc" id="L121">  }</span>
+
+  public String getCognome() {
+<span class="fc" id="L124">    return cognome;</span>
+  }
+
+  public void setCognome(String cognome) {
+<span class="fc" id="L128">    this.cognome = cognome;</span>
+<span class="fc" id="L129">  }</span>
+
+  public String getDataNascita() {
+<span class="fc" id="L132">    return dataNascita;</span>
+  }
+
+  public void setDataNascita(String dataNascita) {
+<span class="fc" id="L136">    this.dataNascita = dataNascita;</span>
+<span class="fc" id="L137">  }</span>
+
+  public String getIndirizzo() {
+<span class="fc" id="L140">    return indirizzo;</span>
+  }
+
+  public void setIndirizzo(String indirizzo) {
+<span class="fc" id="L144">    this.indirizzo = indirizzo;</span>
+<span class="fc" id="L145">  }</span>
+
+  public String getTelefono() {
+<span class="fc" id="L148">    return telefono;</span>
+  }
+
+  public void setTelefono(String telefono) {
+<span class="fc" id="L152">    this.telefono = telefono;</span>
+<span class="fc" id="L153">  }</span>
+
+  public String getEmail() {
+<span class="fc" id="L156">    return email;</span>
+  }
+
+  public void setEmail(String email) {
+<span class="fc" id="L160">    this.email = email;</span>
+<span class="fc" id="L161">  }</span>
+
+  public String getPassword() {
+<span class="fc" id="L164">    return password;</span>
+  }
+
+  public void setPassword(String password) {
+<span class="fc" id="L168">    this.password = password;</span>
+<span class="fc" id="L169">  }</span>
+
+  public String getSesso() {
+<span class="fc" id="L172">    return sesso;</span>
+  }
+
+  public void setSesso(String sesso) {
+<span class="fc" id="L176">    this.sesso = sesso;</span>
+<span class="fc" id="L177">  }</span>
+
+  public String getSpecializzazione() {
+<span class="fc" id="L180">    return specializzazione;</span>
+  }
+
+  public void setSpecializzazione(String specializzazione) {
+<span class="fc" id="L184">    this.specializzazione = specializzazione;</span>
+<span class="fc" id="L185">  }</span>
+
+  public String getCodiceAlbo() {
+<span class="fc" id="L188">    return codiceAlbo;</span>
+  }
+
+  public void setCodiceAlbo(String codiceAlbo) {
+<span class="fc" id="L192">    this.codiceAlbo = codiceAlbo;</span>
+<span class="fc" id="L193">  }</span>
+
+  public String getNomeStruttura() {
+<span class="fc" id="L196">    return nomeStruttura;</span>
+  }
+
+  public void setNomeStruttura(String nomeStruttura) {
+<span class="fc" id="L200">    this.nomeStruttura = nomeStruttura;</span>
+<span class="fc" id="L201">  }</span>
+
+  public String getIndirizzoStruttura() {
+<span class="fc" id="L204">    return indirizzoStruttura;</span>
+  }
+
+  public void setIndirizzoStruttura(String indirizzoStruttura) {
+<span class="fc" id="L208">    this.indirizzoStruttura = indirizzoStruttura;</span>
+<span class="fc" id="L209">  }</span>
+
+  public Integer getStato() {
+<span class="fc" id="L212">    return stato;</span>
+  }
+
+  public void setStato(Integer stato) {
+<span class="fc" id="L216">    this.stato = stato;</span>
+<span class="fc" id="L217">  }</span>
+
+  /**
+   * validazione dello stato.
+   */
+
+  public void validateStato() throws IllegalArgumentException {
+<span class="fc" id="L224">    Validate.notNull(getStato(), &quot;lo stato del dottore non può essere assente&quot;);</span>
+<span class="fc bfc" id="L225" title="All 4 branches covered.">    Validate.isTrue(getStato() &gt;= 0 &amp;&amp; getStato() &lt;= 2,</span>
+        &quot;Lo stato del dottore non è valido&quot;);
+<span class="fc" id="L227">  }</span>
+
+  /**
+   * validazione del dottore.
+   */
+
+  public void validateDottore() throws IllegalArgumentException {
+<span class="fc" id="L234">    Validate.notNull(codiceFiscale, &quot;Il codice fiscale non può essere vuoto&quot;);</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">    Validate.isTrue(codiceFiscale.length() == 16,</span>
+        &quot;La lunghezza del codice fiscale deve essere di 16 caratteri&quot;);
+
+<span class="fc" id="L238">    Validate.notNull(nome, &quot;Il nome non puo essere vuoto&quot;);</span>
+<span class="fc bfc" id="L239" title="All 4 branches covered.">    Validate.isTrue(nome.length() &lt;= 30 &amp;&amp; nome.length() &gt; 3,</span>
+        &quot;La lunghezza del campo nome non è valida&quot;);
+
+<span class="fc" id="L242">    Validate.notNull(cognome, &quot;Il cognome non puo essere vuoto&quot;);</span>
+<span class="fc bfc" id="L243" title="All 4 branches covered.">    Validate.isTrue(cognome.length() &lt;= 30 &amp;&amp; cognome.length() &gt; 2,</span>
+        &quot;La lunghezza del cognome non è valida&quot;);
+
+<span class="fc" id="L246">    Validate.notNull(sesso, &quot;il sesso non puo' essere vuoto&quot;);</span>
+<span class="fc" id="L247">    Pattern pattern = Pattern.compile(&quot;^M|F$&quot;);</span>
+<span class="fc" id="L248">    Validate.isTrue(pattern.matcher(sesso).matches(), &quot;il sesso non è valido&quot;);</span>
+
+<span class="fc" id="L250">    Validate.notNull(dataNascita, &quot;la data di nascita non puo essere vuota&quot;);</span>
+<span class="fc" id="L251">    Pattern pattern1 = Pattern.compile(</span>
+        &quot;^(0[1-9]|[1-2]\\d|3[01])\\/(0[1-9]|1[0-2])\\/\\d\\d\\d\\d$&quot;);
+<span class="fc" id="L253">    Validate.isTrue(pattern1.matcher(dataNascita).matches(),</span>
+        &quot;la data nascita inserita non è valida&quot;);
+<span class="fc" id="L255">    SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;dd/MM/yyyy&quot;);</span>
+    try {
+<span class="fc" id="L257">      long diff = dateFormat.parse(dataNascita).getTime() - new java.util.Date().getTime();</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">      Validate.isTrue(diff &lt; 0, &quot;La data di nascita è nel futuro&quot;);</span>
+<span class="nc" id="L259">    } catch (ParseException ex) {</span>
+<span class="nc" id="L260">      throw new IllegalArgumentException(&quot;la data nascita inserita non è valida&quot;);</span>
+<span class="fc" id="L261">    }</span>
+<span class="fc" id="L262">    Validate.notNull(email, &quot;la mail non puo essere assente&quot;);</span>
+<span class="fc" id="L263">    Pattern pattern2 = Pattern.compile(&quot;^[a-zA-Z0-9.!#$%&amp;’*+/=?^_`{}~-]+@(?:[a-zA-Z0-9-\\.]+)\\w$&quot;);</span>
+<span class="fc" id="L264">    Validate.isTrue(pattern2.matcher(email).matches(), &quot;L'email non è valida&quot;);</span>
+
+<span class="fc" id="L266">    Validate.notNull(telefono, &quot;telefono non puo essere assente&quot;);</span>
+<span class="fc" id="L267">    Pattern pattern3 = Pattern.compile(&quot;^\\+?\\d{5,15}$&quot;);</span>
+<span class="fc" id="L268">    Validate.isTrue(pattern3.matcher(telefono).matches(),</span>
+        &quot;il campo numero di telefono non rispetta il formato&quot;);
+
+<span class="fc" id="L271">    Validate.notNull(indirizzo, &quot;l'indirizzo non puo' essere vuoto&quot;);</span>
+<span class="fc bfc" id="L272" title="All 4 branches covered.">    Validate.isTrue(indirizzo.length() &lt;= 50 &amp;&amp; indirizzo.length() &gt;= 4,</span>
+        &quot;La lunghezza dell'indirizzo non è valida&quot;);
+
+<span class="fc" id="L275">    Validate.notNull(password, &quot;la password non puo' essere assente&quot;);</span>
+<span class="fc bfc" id="L276" title="All 4 branches covered.">    Validate.isTrue(password.length() &lt;= 30 &amp;&amp; password.length() &gt;= 8,</span>
+        &quot;La lunghezza del campo password non è valida&quot;);
+
+<span class="fc" id="L279">    Validate.notNull(specializzazione, &quot;la specializzazione non puo essere assente&quot;);</span>
+<span class="fc bfc" id="L280" title="All 4 branches covered.">    Validate.isTrue(specializzazione.length() &lt;= 100 &amp;&amp; specializzazione.length() &gt;= 1,</span>
+        &quot;la lunghezza del campo Specializzazione non è valida&quot;);
+
+<span class="fc" id="L283">    Validate.notNull(codiceAlbo, &quot;codice albo non puo essere assente&quot;);</span>
+<span class="fc bfc" id="L284" title="All 4 branches covered.">    Validate.isTrue(codiceAlbo.length() &lt;= 50 &amp;&amp; codiceAlbo.length() &gt;= 4,</span>
+        &quot;La lunghezza del campo Codice Albo non è valida&quot;);
+
+<span class="fc" id="L287">    Validate.notNull(nomeStruttura, &quot;la struttura non può essere assente&quot;);</span>
+<span class="fc bfc" id="L288" title="All 4 branches covered.">    Validate.isTrue(nomeStruttura.length() &lt;= 100 &amp;&amp; nomeStruttura.length() &gt;= 1,</span>
+        &quot;La lunghezza del campo Nome Struttura non è valida&quot;);
+
+<span class="fc" id="L291">    Validate.notNull(indirizzoStruttura, &quot;l'indirizzo struttura non può essere assente&quot;);</span>
+<span class="fc bfc" id="L292" title="All 4 branches covered.">    Validate.isTrue(indirizzoStruttura.length() &lt;= 100 &amp;&amp; indirizzoStruttura.length() &gt;= 1,</span>
+        &quot;La lunghezza del campo Indirizzo Struttura non è valida&quot;);
+<span class="fc" id="L294">  }</span>
+
+  public void validateCodiceFiscale() {
+<span class="fc" id="L297">    Validate.notNull(codiceFiscale, &quot;Il codice fiscale non può essere vuoto&quot;);</span>
+<span class="fc bfc" id="L298" title="All 2 branches covered.">    Validate.isTrue(codiceFiscale.length() == 16,</span>
+        &quot;La lunghezza del codice fiscale deve essere di 16 caratteri&quot;);
+
+<span class="fc" id="L301">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TerapiaServiceConcrete.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.terapia.service</a> &gt; <span class="el_source">TerapiaServiceConcrete.java</span></div><h1>TerapiaServiceConcrete.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.terapia.service;
+
+import com.glucoseguardian.webbackend.exceptions.EntityNotFoundException;
+import com.glucoseguardian.webbackend.exceptions.UserNotFoundException;
+import com.glucoseguardian.webbackend.storage.dao.FarmacoDao;
+import com.glucoseguardian.webbackend.storage.dao.TerapiaDao;
+import com.glucoseguardian.webbackend.storage.dto.AssunzioneFarmacoDto;
+import com.glucoseguardian.webbackend.storage.dto.TerapiaDto;
+import com.glucoseguardian.webbackend.storage.entity.AssunzioneFarmaco;
+import com.glucoseguardian.webbackend.storage.entity.Farmaco;
+import com.glucoseguardian.webbackend.storage.entity.Terapia;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
+/**
+ * This is an implementation of TerapiaServiceInterface.
+ */
+@Service
+@Primary
+<span class="fc" id="L26">public class TerapiaServiceConcrete implements TerapiaServiceInterface {</span>
+
+  @Autowired
+  private TerapiaDao terapiaDao;
+  @Autowired
+  private FarmacoDao farmacoDao;
+
+  @Override
+  public boolean updateTerapia(String codiceFiscalePaziente,
+      List&lt;AssunzioneFarmacoDto&gt; listaFarmaci) throws EntityNotFoundException {
+
+<span class="fc" id="L37">    Terapia terapia = terapiaDao.findByPaziente_codiceFiscale(codiceFiscalePaziente).orElse(null);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">    if (terapia == null) {</span>
+<span class="fc" id="L39">      throw new UserNotFoundException(&quot;Paziente non trovato&quot;);</span>
+    }
+
+<span class="fc" id="L42">    List&lt;AssunzioneFarmaco&gt; assunzioneFarmacos = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">    for (AssunzioneFarmacoDto assunzioneFarmaco : listaFarmaci) {</span>
+<span class="fc" id="L44">      Optional&lt;Farmaco&gt; farmaco = farmacoDao.findById(assunzioneFarmaco.getIdFarmaco());</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">      if (farmaco.isPresent()) {</span>
+        // Add &quot;:00&quot; if missing, sql.Time wants &quot;HH:MM:SS&quot;
+<span class="fc" id="L47">        StringBuilder orarioAssunzione = new StringBuilder(assunzioneFarmaco.getOrarioAssunzione());</span>
+<span class="fc" id="L48">        int matches = StringUtils.countMatches(orarioAssunzione.toString(), &quot;:&quot;);</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        while (matches &lt; 2) {</span>
+<span class="fc" id="L50">          orarioAssunzione.append(&quot;:00&quot;);</span>
+<span class="fc" id="L51">          matches++;</span>
+        }
+<span class="fc" id="L53">        Time time = Time.valueOf(orarioAssunzione.toString());</span>
+
+<span class="fc" id="L55">        AssunzioneFarmaco entity = new AssunzioneFarmaco(farmaco.get(),</span>
+<span class="fc" id="L56">            assunzioneFarmaco.getDosaggio(), time, assunzioneFarmaco.getViaDiSomministrazione(),</span>
+<span class="fc" id="L57">            assunzioneFarmaco.getNoteAggiuntive());</span>
+<span class="fc" id="L58">        entity.setTerapia(terapia);</span>
+<span class="fc" id="L59">        assunzioneFarmacos.add(entity);</span>
+<span class="fc" id="L60">      } else {</span>
+<span class="fc" id="L61">        throw new EntityNotFoundException(</span>
+<span class="fc" id="L62">            &quot;Farmaco &quot; + assunzioneFarmaco.getIdFarmaco() + &quot; non trovato&quot;);</span>
+      }
+      // always use the same list - otherwise we will find duplicates
+<span class="fc" id="L65">      terapia.getAssunzioneFarmacos().clear();</span>
+<span class="fc" id="L66">      terapia.getAssunzioneFarmacos().addAll(assunzioneFarmacos);</span>
+<span class="fc" id="L67">      terapiaDao.save(terapia);</span>
+<span class="fc" id="L68">    }</span>
+<span class="fc" id="L69">    return true;</span>
+  }
+
+  @Override
+  public TerapiaDto findTerapia(Long idTerapia) throws EntityNotFoundException {
+<span class="nc" id="L74">    Terapia result = terapiaDao.findById(idTerapia).orElse(null);</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">    if (result != null) {</span>
+<span class="nc" id="L76">      return TerapiaDto.valueOf(result);</span>
+    } else {
+<span class="nc" id="L78">      throw new EntityNotFoundException(&quot;Terapia non trovata.&quot;);</span>
+    }
+  }
+
+  @Override
+  public TerapiaDto findByPaziente(String codiceFiscalePaziente) throws UserNotFoundException {
+<span class="nc" id="L84">    Terapia result = terapiaDao.findByPaziente_codiceFiscale(codiceFiscalePaziente).orElse(null);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">    if (result != null) {</span>
+<span class="nc" id="L86">      return TerapiaDto.valueOf(result);</span>
+    } else {
+<span class="nc" id="L88">      throw new UserNotFoundException(&quot;Paziente non trovato.&quot;);</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

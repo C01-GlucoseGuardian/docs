@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JwtAuthenticationFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.configuration</a> &gt; <span class="el_source">JwtAuthenticationFilter.java</span></div><h1>JwtAuthenticationFilter.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.configuration;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
+import com.glucoseguardian.webbackend.autenticazione.service.JwtService;
+import com.glucoseguardian.webbackend.storage.entity.Utente;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+/**
+ * Requestfilter basato su token jwt. Utilizza {@link JwtService} per la verifica dei token.
+ */
+@Component
+<span class="nc" id="L26">public class JwtAuthenticationFilter extends OncePerRequestFilter {</span>
+
+  private static final String BEARER = &quot;Bearer &quot;;
+
+  @Autowired
+  private JwtService jwtService;
+  @Autowired
+  private UserDetailsService userDetailsService;
+
+  @Override
+  protected void doFilterInternal(
+      @NonNull HttpServletRequest request,
+      @NonNull HttpServletResponse response,
+      @NonNull FilterChain filterChain
+  ) throws ServletException, IOException {
+    // Don't check jwt if user is already authenticated
+<span class="nc bnc" id="L42" title="All 2 branches missed.">    if (SecurityContextHolder.getContext().getAuthentication() == null) {</span>
+      // Get jwt from request
+<span class="nc" id="L44">      Optional&lt;String&gt; jwt = getJwtFromRequest(request);</span>
+<span class="nc" id="L45">      jwt.ifPresent(token -&gt; {</span>
+<span class="nc" id="L46">        String email = jwtService.getUsername(token);</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (email != null) {</span>
+          try {
+<span class="nc" id="L49">            Utente user = (Utente) this.userDetailsService.loadUserByUsername(email);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            if (jwtService.isTokenValid(token, user)) {</span>
+              // jwt is valid we can authenticate the user
+              SecurityContextHolder
+<span class="nc" id="L53">                  .getContext()</span>
+<span class="nc" id="L54">                  .setAuthentication(</span>
+<span class="nc" id="L55">                      new UsernamePasswordAuthenticationToken(user, token, user.getAuthorities())</span>
+                  );
+            }
+<span class="nc" id="L58">          } catch (UsernameNotFoundException ignored) {</span>
+            // Do nothing
+<span class="nc" id="L60">          }</span>
+        }
+<span class="nc" id="L62">      });</span>
+    }
+
+<span class="nc" id="L65">    filterChain.doFilter(request, response);</span>
+<span class="nc" id="L66">  }</span>
+
+  /**
+   * Ritorna il token jwt dall'header Authorization.
+   */
+  private Optional&lt;String&gt; getJwtFromRequest(@NonNull HttpServletRequest request) {
+<span class="nc" id="L72">    String bearerToken = request.getHeader(AUTHORIZATION);</span>
+<span class="nc bnc" id="L73" title="All 4 branches missed.">    if (bearerToken == null || !bearerToken.startsWith(BEARER)) {</span>
+<span class="nc" id="L74">      return Optional.empty();</span>
+    }
+<span class="nc" id="L76">    return Optional.of(bearerToken.substring(7));</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

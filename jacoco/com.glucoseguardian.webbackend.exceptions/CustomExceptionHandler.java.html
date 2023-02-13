@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.exceptions</a> &gt; <span class="el_source">CustomExceptionHandler.java</span></div><h1>CustomExceptionHandler.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.exceptions;
+
+import com.glucoseguardian.webbackend.storage.dto.LoginOutputDto;
+import com.glucoseguardian.webbackend.storage.dto.RisultatoDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+/**
+ * Custom exception handler.
+ */
+@ControllerAdvice
+<span class="fc" id="L18">public class CustomExceptionHandler {</span>
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleAccessDeniedException(AccessDeniedException ex,
+      WebRequest request) {
+<span class="fc" id="L23">    RisultatoDto errorDetails = new RisultatoDto(&quot;Utente non autorizzato&quot;);</span>
+<span class="fc" id="L24">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.FORBIDDEN);</span>
+  }
+
+  @ExceptionHandler(UserNotFoundException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleUserNotFoundException(UserNotFoundException ex,
+      WebRequest request) {
+<span class="nc" id="L30">    RisultatoDto errorDetails = new RisultatoDto(ex.getMessage());</span>
+<span class="nc" id="L31">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.NOT_FOUND);</span>
+  }
+
+  @ExceptionHandler(EntityNotFoundException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleEntityNotFoundException(
+      EntityNotFoundException ex, WebRequest request) {
+<span class="nc" id="L37">    RisultatoDto errorDetails = new RisultatoDto(ex.getMessage());</span>
+<span class="nc" id="L38">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.NOT_FOUND);</span>
+  }
+
+  @ExceptionHandler(InvalidCredentialsException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleInvalidCredentialsException(
+      InvalidCredentialsException ex, WebRequest request) {
+<span class="nc" id="L44">    RisultatoDto errorDetails = new RisultatoDto(ex.getMessage());</span>
+<span class="nc" id="L45">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  @ExceptionHandler(AccountDisabledException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleAccountDisabledException(
+      AccountDisabledException ex, WebRequest request) {
+<span class="nc" id="L51">    RisultatoDto errorDetails = new RisultatoDto(ex.getMessage());</span>
+<span class="nc" id="L52">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.UNAUTHORIZED);</span>
+  }
+
+  @ExceptionHandler(NeedOtpException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleNeedOtpException(
+      NeedOtpException ex, WebRequest request) {
+<span class="nc" id="L58">    LoginOutputDto errorDetails = new LoginOutputDto();</span>
+<span class="nc" id="L59">    errorDetails.setNeedOtp(true);</span>
+<span class="nc" id="L60">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.UNAUTHORIZED);</span>
+  }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleIllegalArgumentException(
+      IllegalArgumentException ex, WebRequest request) {
+<span class="fc" id="L66">    RisultatoDto errorDetails = new RisultatoDto(ex.getMessage());</span>
+<span class="fc" id="L67">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  @ExceptionHandler(NullPointerException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleNullPointerException(
+      NullPointerException ex, WebRequest request) {
+<span class="fc" id="L73">    RisultatoDto errorDetails = new RisultatoDto(ex.getMessage());</span>
+<span class="fc" id="L74">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  @ExceptionHandler(DuplicatedEntityException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleDuplicatedEntityException(
+      DuplicatedEntityException ex, WebRequest request) {
+<span class="fc" id="L80">    RisultatoDto errorDetails = new RisultatoDto(ex.getMessage());</span>
+<span class="fc" id="L81">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleHttpMessageNotReadable(
+      HttpMessageNotReadableException ex, WebRequest request) {
+<span class="nc" id="L87">    RisultatoDto errorDetails = new RisultatoDto(&quot;Malformed JSON request&quot;);</span>
+<span class="nc" id="L88">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  public final ResponseEntity&lt;RisultatoDto&gt; handleHttpRequestMethodNotSupportedException(
+      HttpRequestMethodNotSupportedException ex, WebRequest request) {
+<span class="nc" id="L94">    RisultatoDto errorDetails = new RisultatoDto(&quot;Metodo non supportato&quot;);</span>
+<span class="nc" id="L95">    return new ResponseEntity&lt;&gt;(errorDetails, HttpStatus.BAD_REQUEST);</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Farmaco.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.entity</a> &gt; <span class="el_source">Farmaco.java</span></div><h1>Farmaco.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import java.util.Objects;
+
+/**
+ * Questa classe rappresenta l'entità Farmaco.
+ */
+@Entity
+public class Farmaco {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+
+  @Column(length = 50)
+  @NotNull
+  private String nomeFarmaco;
+  @NotNull
+  private String principioAttivo;
+  @NotNull
+  private String confezione;
+
+
+<span class="fc" id="L30">  public Farmaco() {</span>
+<span class="fc" id="L31">  }</span>
+
+  /**
+   * Costruttore di default della classe Farmaco.
+   */
+<span class="nc" id="L36">  public Farmaco(String nomeFarmaco, String principioAttivo, String confezione) {</span>
+<span class="nc" id="L37">    this.nomeFarmaco = nomeFarmaco;</span>
+<span class="nc" id="L38">    this.principioAttivo = principioAttivo;</span>
+<span class="nc" id="L39">    this.confezione = confezione;</span>
+
+<span class="nc" id="L41">  }</span>
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L45" title="All 2 branches missed.">    if (o instanceof Farmaco) {</span>
+<span class="nc" id="L46">      return Objects.equals(id, ((Farmaco) o).id);</span>
+    }
+<span class="nc" id="L48">    return false;</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L53">    return Objects.hash(id);</span>
+  }
+
+  public long getId() {
+<span class="nc" id="L57">    return id;</span>
+  }
+
+  public void setId(long id) {
+<span class="nc" id="L61">    this.id = id;</span>
+<span class="nc" id="L62">  }</span>
+
+  public String getNomeFarmaco() {
+<span class="nc" id="L65">    return nomeFarmaco;</span>
+  }
+
+  public void setNomeFarmaco(String nomeFarmaco) {
+<span class="nc" id="L69">    this.nomeFarmaco = nomeFarmaco;</span>
+<span class="nc" id="L70">  }</span>
+
+  public String getPrincipioAttivo() {
+<span class="nc" id="L73">    return principioAttivo;</span>
+  }
+
+  public void setPrincipioAttivo(String principioAttivo) {
+<span class="nc" id="L77">    this.principioAttivo = principioAttivo;</span>
+<span class="nc" id="L78">  }</span>
+
+  public String getConfezione() {
+<span class="nc" id="L81">    return confezione;</span>
+  }
+
+  public void setConfezione(String confezione) {
+<span class="nc" id="L85">    this.confezione = confezione;</span>
+<span class="nc" id="L86">  }</span>
+
+  @Override
+  public String toString() {
+<span class="nc" id="L90">    return &quot;Farmaco{&quot;</span>
+        + &quot;id=&quot; + id
+        + &quot;, nomeFarmaco='&quot; + nomeFarmaco + '\''
+        + &quot;, principioAttivo='&quot; + principioAttivo + '\''
+        + &quot;, confezione='&quot; + confezione + '\''
+        + '}';
+  }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotificaServiceConcrete.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.notifica.service</a> &gt; <span class="el_source">NotificaServiceConcrete.java</span></div><h1>NotificaServiceConcrete.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.notifica.service;
+
+import com.glucoseguardian.webbackend.exceptions.EntityNotFoundException;
+import com.glucoseguardian.webbackend.exceptions.UserNotFoundException;
+import com.glucoseguardian.webbackend.storage.dao.AdminDao;
+import com.glucoseguardian.webbackend.storage.dao.DottoreDao;
+import com.glucoseguardian.webbackend.storage.dao.NotificaDao;
+import com.glucoseguardian.webbackend.storage.dao.PazienteDao;
+import com.glucoseguardian.webbackend.storage.dao.TutoreDao;
+import com.glucoseguardian.webbackend.storage.dto.ListDto;
+import com.glucoseguardian.webbackend.storage.dto.NotificaDto;
+import com.glucoseguardian.webbackend.storage.entity.Admin;
+import com.glucoseguardian.webbackend.storage.entity.Dottore;
+import com.glucoseguardian.webbackend.storage.entity.Notifica;
+import com.glucoseguardian.webbackend.storage.entity.Paziente;
+import com.glucoseguardian.webbackend.storage.entity.Tutore;
+import java.sql.Date;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
+/**
+ * This is an implementation of NotificaServiceInterface.
+ */
+@Service
+@Primary
+<span class="fc" id="L31">public class NotificaServiceConcrete implements NotificaServiceInterface {</span>
+
+  @Autowired
+  private NotificaDao notificaDao;
+  @Autowired
+  private PazienteDao pazienteDao;
+  @Autowired
+  private DottoreDao dottoreDao;
+  @Autowired
+  private TutoreDao tutoreDao;
+  @Autowired
+  private AdminDao adminDao;
+  @Autowired
+  private MailService mailService;
+  @Autowired
+  private FirebaseService firebaseService;
+
+  @Override
+  public NotificaDto findById(Long id) throws EntityNotFoundException {
+<span class="fc" id="L50">    Notifica result = notificaDao.findById(id).orElse(null);</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">    if (result != null) {</span>
+<span class="fc" id="L52">      return NotificaDto.valueOf(result);</span>
+    } else {
+<span class="nc" id="L54">      throw new EntityNotFoundException(&quot;Notifica non trovata.&quot;);</span>
+    }
+  }
+
+  @Override
+  public boolean send(NotificaDto notificaDto) throws UserNotFoundException {
+<span class="fc" id="L60">    Notifica notifica = new Notifica(notificaDto.getMessaggio(),</span>
+<span class="fc" id="L61">        new Date(System.currentTimeMillis()), new Time(System.currentTimeMillis()), 1);</span>
+
+<span class="fc" id="L63">    List&lt;String&gt; destinatari = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L64">    List&lt;String&gt; destinatariCf = new ArrayList&lt;&gt;();</span>
+
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">    if (notificaDto.getDottoreDestinatario() != null) {</span>
+<span class="fc" id="L67">      Optional&lt;Dottore&gt; utente = dottoreDao.findById(notificaDto.getDottoreDestinatario());</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">      if (utente.isPresent()) {</span>
+<span class="fc" id="L69">        notifica.setDottoreDestinatario(utente.get());</span>
+<span class="fc" id="L70">        destinatari.add(utente.get().getEmail());</span>
+<span class="fc" id="L71">        destinatariCf.add(utente.get().getCodiceFiscale());</span>
+      } else {
+<span class="nc" id="L73">        throw new UserNotFoundException(&quot;Dottore non trovato&quot;);</span>
+      }
+    }
+
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">    if (notificaDto.getPazienteDestinatario() != null) {</span>
+<span class="nc" id="L78">      Optional&lt;Paziente&gt; utente = pazienteDao.findById(notificaDto.getPazienteDestinatario());</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">      if (utente.isPresent()) {</span>
+<span class="nc" id="L80">        notifica.setPazienteDestinatario(utente.get());</span>
+<span class="nc" id="L81">        destinatari.add(utente.get().getEmail());</span>
+<span class="nc" id="L82">        destinatariCf.add(utente.get().getCodiceFiscale());</span>
+      } else {
+<span class="nc" id="L84">        throw new UserNotFoundException(&quot;Paziente non trovato&quot;);</span>
+      }
+    }
+
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">    if (notificaDto.getPazienteOggetto() != null) {</span>
+<span class="nc" id="L89">      Optional&lt;Paziente&gt; utente = pazienteDao.findById(notificaDto.getPazienteOggetto());</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">      if (utente.isPresent()) {</span>
+<span class="nc" id="L91">        notifica.setPazienteOggetto(utente.get());</span>
+      } else {
+<span class="nc" id="L93">        throw new UserNotFoundException(&quot;Paziente non trovato&quot;);</span>
+      }
+    }
+
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">    if (notificaDto.getTutoreDestinatario() != null) {</span>
+<span class="nc" id="L98">      Optional&lt;Tutore&gt; utente = tutoreDao.findById(notificaDto.getTutoreDestinatario());</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">      if (utente.isPresent()) {</span>
+<span class="nc" id="L100">        notifica.setTutoreDestinatario(utente.get());</span>
+<span class="nc" id="L101">        destinatari.add(utente.get().getEmail());</span>
+<span class="nc" id="L102">        destinatariCf.add(utente.get().getCodiceFiscale());</span>
+      } else {
+<span class="nc" id="L104">        throw new UserNotFoundException(&quot;Tutore non trovato&quot;);</span>
+      }
+    }
+
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">    if (notificaDto.getAdminDestinatario() != null) {</span>
+<span class="nc" id="L109">      Optional&lt;Admin&gt; utente = adminDao.findById(notificaDto.getAdminDestinatario());</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">      if (utente.isPresent()) {</span>
+<span class="nc" id="L111">        notifica.setAdminDestinatario(utente.get());</span>
+<span class="nc" id="L112">        destinatari.add(utente.get().getEmail());</span>
+<span class="nc" id="L113">        destinatariCf.add(utente.get().getCodiceFiscale());</span>
+      } else {
+<span class="nc" id="L115">        throw new UserNotFoundException(&quot;Admin non trovato&quot;);</span>
+      }
+    }
+
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">    if (destinatari.isEmpty()) {</span>
+<span class="nc" id="L120">      throw new IllegalArgumentException(&quot;Nessun destinatario presente&quot;);</span>
+    }
+
+<span class="fc" id="L123">    notificaDao.save(notifica);</span>
+
+    // Check if entity is correctly saved
+<span class="fc" id="L126">    boolean result = notificaDao.existsById(notifica.getId());</span>
+
+<span class="fc bfc" id="L128" title="All 2 branches covered.">    if (result) {</span>
+<span class="fc" id="L129">      mailService.sendNotification(&quot;Hai una nuova notifica&quot;, notifica.getMessaggio(), destinatari);</span>
+<span class="fc" id="L130">      firebaseService.sendNotification(&quot;Hai una nuova notifica&quot;, notifica.getMessaggio(),</span>
+          destinatariCf);
+    }
+
+<span class="fc" id="L134">    return result;</span>
+  }
+
+  @Override
+  public ListDto&lt;NotificaDto&gt; findByPaziente(String codiceFiscale) throws UserNotFoundException {
+<span class="fc" id="L139">    Paziente result = pazienteDao.findById(codiceFiscale).orElse(null);</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">    if (result != null) {</span>
+<span class="fc" id="L141">      List&lt;NotificaDto&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">      for (Notifica notifica : result.getNotifiche()) {</span>
+<span class="fc" id="L143">        list.add(NotificaDto.valueOf(notifica));</span>
+<span class="fc" id="L144">      }</span>
+<span class="fc" id="L145">      ListDto&lt;NotificaDto&gt; listDto = new ListDto&lt;&gt;(list);</span>
+<span class="fc" id="L146">      return listDto;</span>
+    } else {
+<span class="nc" id="L148">      throw new UserNotFoundException(&quot;Paziente non trovato.&quot;);</span>
+    }
+  }
+
+  @Override
+  public ListDto&lt;NotificaDto&gt; findByDottore(String codiceFiscale) throws UserNotFoundException {
+<span class="fc" id="L154">    Dottore result = dottoreDao.findById(codiceFiscale).orElse(null);</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">    if (result != null) {</span>
+<span class="fc" id="L156">      List&lt;NotificaDto&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">      for (Notifica notifica : result.getNotifiche()) {</span>
+<span class="fc" id="L158">        list.add(NotificaDto.valueOf(notifica));</span>
+<span class="fc" id="L159">      }</span>
+<span class="fc" id="L160">      ListDto&lt;NotificaDto&gt; listDto = new ListDto&lt;&gt;(list);</span>
+<span class="fc" id="L161">      return listDto;</span>
+    } else {
+<span class="nc" id="L163">      throw new UserNotFoundException(&quot;Dottore non trovato.&quot;);</span>
+    }
+  }
+
+  @Override
+  public ListDto&lt;NotificaDto&gt; findByTutore(String codiceFiscale) throws UserNotFoundException {
+<span class="fc" id="L169">    Tutore result = tutoreDao.findById(codiceFiscale).orElse(null);</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">    if (result != null) {</span>
+<span class="fc" id="L171">      List&lt;NotificaDto&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">      for (Notifica notifica : result.getNotifiche()) {</span>
+<span class="fc" id="L173">        list.add(NotificaDto.valueOf(notifica));</span>
+<span class="fc" id="L174">      }</span>
+<span class="fc" id="L175">      ListDto&lt;NotificaDto&gt; listDto = new ListDto&lt;&gt;(list);</span>
+<span class="fc" id="L176">      return listDto;</span>
+    } else {
+<span class="nc" id="L178">      throw new UserNotFoundException(&quot;Tutore non trovato.&quot;);</span>
+    }
+  }
+
+  @Override
+  public ListDto&lt;NotificaDto&gt; findByAdmin(String codiceFiscale) throws UserNotFoundException {
+<span class="fc" id="L184">    Admin result = adminDao.findById(codiceFiscale).orElse(null);</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">    if (result != null) {</span>
+<span class="fc" id="L186">      List&lt;NotificaDto&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">      for (Notifica notifica : result.getNotifiche()) {</span>
+<span class="fc" id="L188">        list.add(NotificaDto.valueOf(notifica));</span>
+<span class="fc" id="L189">      }</span>
+<span class="fc" id="L190">      ListDto&lt;NotificaDto&gt; listDto = new ListDto&lt;&gt;(list);</span>
+<span class="fc" id="L191">      return listDto;</span>
+    } else {
+<span class="nc" id="L193">      throw new UserNotFoundException(&quot;Admin non trovato.&quot;);</span>
+    }
+  }
+
+  @Override
+  public boolean updateStato(long idNotifica, Integer newStato) throws EntityNotFoundException {
+<span class="fc" id="L199">    Notifica result = notificaDao.findById(idNotifica).orElse(null);</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">    if (result != null) {</span>
+<span class="fc" id="L201">      result.setStato(newStato);</span>
+<span class="fc" id="L202">      notificaDao.save(result);</span>
+<span class="fc" id="L203">      return true;</span>
+    } else {
+<span class="nc" id="L205">      throw new EntityNotFoundException(&quot;Notifica non trovata.&quot;);</span>
+    }
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

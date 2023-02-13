@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="general library API docs, for the Dart programming language.">
+  <title>general library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">glucose_guardian</a></li>
+    <li class="self-crumb">general library</li>
+  </ol>
+  <div class="self-name">general</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span class="material-symbols-outlined">
+        brightness_4
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+    
+      <div>
+<h1><span class="kind-library">general</span> library 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+ 
+</h1></div>
+
+    
+
+
+    <section class="summary offset-anchor" id="classes">
+      <h2>Classes</h2>
+
+      <dl>
+        <dt id="BottomNavigationBarIndex">
+  <span class="name "><a href="../constants_general/BottomNavigationBarIndex-class.html">BottomNavigationBarIndex</a></span> 
+
+</dt>
+<dd>
+  Define a "wrapper class" to be used by provider to find the bottomNavigationBar
+index up in the widget tree not confusing it with other simple integers that
+may be present
+</dd>
+
+      </dl>
+    </section>
+
+
+
+    <section class="summary offset-anchor" id="constants">
+      <h2>Constants</h2>
+
+      <dl class="properties">
+        <dt id="kAppStatus" class="constant">
+    <span class="name "><a href="../constants_general/kAppStatus-constant.html">kAppStatus</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  1 for development mode, 2 for staging, 3 for prod
+this choses the server in constants/api.dart
+  
+
+    <div>
+      <span class="signature"><code>2</code></span>
+    </div>
+</dd>
+
+        <dt id="kGlucoseUOM" class="constant">
+    <span class="name "><a href="../constants_general/kGlucoseUOM-constant.html">kGlucoseUOM</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  
+
+</dt>
+<dd>
+  
+  
+
+    <div>
+      <span class="signature"><code>&quot;mg&#47;dL&quot;</code></span>
+    </div>
+</dd>
+
+        <dt id="kHomeNavigatorPaths" class="constant">
+    <span class="name "><a href="../constants_general/kHomeNavigatorPaths-constant.html">kHomeNavigatorPaths</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  Navigator paths of the homepage of paziente
+  
+
+    <div>
+      <span class="signature"><code>[&quot;home&quot;, &quot;agenda&quot;, &quot;notifiche&quot;, &quot;dottore&quot;, &quot;profilo&quot;]</code></span>
+    </div>
+</dd>
+
+        <dt id="kTutoreHomeNavigatorPaths" class="constant">
+    <span class="name "><a href="../constants_general/kTutoreHomeNavigatorPaths-constant.html">kTutoreHomeNavigatorPaths</a></span>
+  <span class="signature">&#8594; const <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  Navigator paths of the homepage of tutore
+  
+
+    <div>
+      <span class="signature"><code>[&quot;home&quot;, &quot;agenda&quot;, &quot;dottore&quot;, &quot;profilo&quot;]</code></span>
+    </div>
+</dd>
+
+      </dl>
+    </section>
+
+
+    <section class="summary offset-anchor" id="functions">
+      <h2>Functions</h2>
+
+      <dl class="callables">
+        <dt id="formatTime" class="callable">
+  <span class="name"><a href="../constants_general/formatTime.html">formatTime</a></span><span class="signature">(<wbr><span class="parameter" id="formatTime-param-time"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/material/TimeOfDay-class.html">TimeOfDay</a></span> <span class="parameter-name">time</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the formatted time in the hh:mm format
+  
+
+</dd>
+
+        <dt id="getHighest" class="callable">
+  <span class="name"><a href="../constants_general/getHighest.html">getHighest</a></span><span class="signature">(<wbr><span class="parameter" id="getHighest-param-list"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_glicemia/Glicemia-class.html">Glicemia</a></span>&gt;</span></span> <span class="parameter-name">list</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../models_glicemia/Glicemia-class.html">Glicemia</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get highest measurement in list
+  
+
+</dd>
+
+        <dt id="getLowest" class="callable">
+  <span class="name"><a href="../constants_general/getLowest.html">getLowest</a></span><span class="signature">(<wbr><span class="parameter" id="getLowest-param-list"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_glicemia/Glicemia-class.html">Glicemia</a></span>&gt;</span></span> <span class="parameter-name">list</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../models_glicemia/Glicemia-class.html">Glicemia</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get lowest measurement in list
+  
+
+</dd>
+
+        <dt id="isGlucoseValueNormal" class="callable">
+  <span class="name"><a href="../constants_general/isGlucoseValueNormal.html">isGlucoseValueNormal</a></span><span class="signature">(<wbr><span class="parameter" id="isGlucoseValueNormal-param-value"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">value</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  checks if glucose value is normal or not
+  
+
+</dd>
+
+        <dt id="timeOfDayFromApiStringNoSeconds" class="callable">
+  <span class="name"><a href="../constants_general/timeOfDayFromApiStringNoSeconds.html">timeOfDayFromApiStringNoSeconds</a></span><span class="signature">(<wbr><span class="parameter" id="timeOfDayFromApiStringNoSeconds-param-time"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">time</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/material/TimeOfDay-class.html">TimeOfDay</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get a TimeOfDay instance from a HH:MM String
+  
+
+</dd>
+
+        <dt id="timeOfDayFromApiStringWithSeconds" class="callable">
+  <span class="name"><a href="../constants_general/timeOfDayFromApiStringWithSeconds.html">timeOfDayFromApiStringWithSeconds</a></span><span class="signature">(<wbr><span class="parameter" id="timeOfDayFromApiStringWithSeconds-param-time"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">time</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/material/TimeOfDay-class.html">TimeOfDay</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get a TimeOfDay instance from a HH:MM:SS String
+  
+
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../index.html">glucose_guardian</a></li>
+  <li class="self-crumb">general library</li>
+</ol>
+
+
+    <h5><span class="package-name">glucose_guardian</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="../bloc_agenda_agenda_bloc/bloc_agenda_agenda_bloc-library.html">agenda_bloc</a></li>
+      <li><a href="../constants_api/constants_api-library.html">api</a></li>
+      <li><a href="../services_exceptions_api_exception/services_exceptions_api_exception-library.html">api_exception</a></li>
+      <li><a href="../services_api_mixin/services_api_mixin-library.html">api_mixin</a></li>
+      <li><a href="../services_api_provider/services_api_provider-library.html">api_provider</a></li>
+      <li><a href="../services_api_repository/services_api_repository-library.html">api_repository</a></li>
+      <li><a href="../constants_assets/constants_assets-library.html">assets</a></li>
+      <li><a href="../models_assunzione_farmaco/models_assunzione_farmaco-library.html">assunzione_farmaco</a></li>
+      <li><a href="../models_auth/models_auth-library.html">auth</a></li>
+      <li><a href="../bloc_auth_auth_bloc/bloc_auth_auth_bloc-library.html">auth_bloc</a></li>
+      <li><a href="../screens_cgm_connect/screens_cgm_connect-library.html">cgm_connect</a></li>
+      <li><a href="../screens_change_password/screens_change_password-library.html">change_password</a></li>
+      <li><a href="../constants_colors/constants_colors-library.html">colors</a></li>
+      <li><a href="../bloc_common/bloc_common-library.html">common</a></li>
+      <li><a href="../constants_dates/constants_dates-library.html">dates</a></li>
+      <li><a href="../components_day_selector/components_day_selector-library.html">day_selector</a></li>
+      <li><a href="../constants_db/constants_db-library.html">db</a></li>
+      <li><a href="../bloc_doctor_doctor_bloc/bloc_doctor_doctor_bloc-library.html">doctor_bloc</a></li>
+      <li><a href="../models_dottore/models_dottore-library.html">dottore</a></li>
+      <li><a href="../components_empty_data/components_empty_data-library.html">empty_data</a></li>
+      <li><a href="../components_error_screen/components_error_screen-library.html">error_screen</a></li>
+      <li><a href="../models_farmaco/models_farmaco-library.html">farmaco</a></li>
+      <li><a href="../models_feedback/models_feedback-library.html">feedback</a></li>
+      <li><a href="../services_firebase/services_firebase-library.html">firebase</a></li>
+      <li><a href="../firebase_options/firebase_options-library.html">firebase_options</a></li>
+      <li><a href="../constants_general/constants_general-library.html">general</a></li>
+      <li><a href="../models_glicemia/models_glicemia-library.html">glicemia</a></li>
+      <li><a href="../components_glucose_chart/components_glucose_chart-library.html">glucose_chart</a></li>
+      <li><a href="../services_db_hive_assunzione_farmaco_service/services_db_hive_assunzione_farmaco_service-library.html">hive_assunzione_farmaco_service</a></li>
+      <li><a href="../screens_landing/screens_landing-library.html">landing</a></li>
+      <li><a href="../components_loading/components_loading-library.html">loading</a></li>
+      <li><a href="../screens_login/screens_login-library.html">login</a></li>
+      <li><a href="../main/main-library.html">main</a></li>
+      <li><a href="../bloc_measurements_measurements_bloc/bloc_measurements_measurements_bloc-library.html">measurements_bloc</a></li>
+      <li><a href="../models_notifica/models_notifica-library.html">notifica</a></li>
+      <li><a href="../bloc_notifications_notifications_bloc/bloc_notifications_notifications_bloc-library.html">notifications_bloc</a></li>
+      <li><a href="../models_numero_utile/models_numero_utile-library.html">numero_utile</a></li>
+      <li><a href="../bloc_patient_patient_bloc/bloc_patient_patient_bloc-library.html">patient_bloc</a></li>
+      <li><a href="../models_paziente/models_paziente-library.html">paziente</a></li>
+      <li><a href="../screens_paziente_agenda/screens_paziente_agenda-library.html">paziente_agenda</a></li>
+      <li><a href="../screens_paziente_doctor_screen/screens_paziente_doctor_screen-library.html">paziente_doctor_screen</a></li>
+      <li><a href="../screens_paziente_home/screens_paziente_home-library.html">paziente_home</a></li>
+      <li><a href="../screens_paziente_notifiche/screens_paziente_notifiche-library.html">paziente_notifiche</a></li>
+      <li><a href="../screens_paziente_profilo/screens_paziente_profilo-library.html">paziente_profilo</a></li>
+      <li><a href="../screens_paziente_send_feedback/screens_paziente_send_feedback-library.html">paziente_send_feedback</a></li>
+      <li><a href="../services_shared_preferences_service/services_shared_preferences_service-library.html">shared_preferences_service</a></li>
+      <li><a href="../constants_strings/constants_strings-library.html">strings</a></li>
+      <li><a href="../models_terapia/models_terapia-library.html">terapia</a></li>
+      <li><a href="../services_db_time_of_day_adapter/services_db_time_of_day_adapter-library.html">time_of_day_adapter</a></li>
+      <li><a href="../models_tutore/models_tutore-library.html">tutore</a></li>
+      <li><a href="../bloc_tutore_tutore_bloc/bloc_tutore_tutore_bloc-library.html">tutore_bloc</a></li>
+      <li><a href="../screens_tutore_home/screens_tutore_home-library.html">tutore_home</a></li>
+      <li><a href="../screens_tutore_paziente_details/screens_tutore_paziente_details-library.html">tutore_paziente_details</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <h5>general library</h5>
+    <ol>
+      <li class="section-title"><a href="../constants_general/constants_general-library.html#classes">Classes</a></li>
+        <li><a href="../constants_general/BottomNavigationBarIndex-class.html">BottomNavigationBarIndex</a></li>
+
+
+
+      <li class="section-title"><a href="../constants_general/constants_general-library.html#constants">Constants</a></li>
+        <li><a href="../constants_general/kAppStatus-constant.html">kAppStatus</a></li>
+        <li><a href="../constants_general/kGlucoseUOM-constant.html">kGlucoseUOM</a></li>
+        <li><a href="../constants_general/kHomeNavigatorPaths-constant.html">kHomeNavigatorPaths</a></li>
+        <li><a href="../constants_general/kTutoreHomeNavigatorPaths-constant.html">kTutoreHomeNavigatorPaths</a></li>
+
+
+      <li class="section-title"><a href="../constants_general/constants_general-library.html#functions">Functions</a></li>
+        <li><a href="../constants_general/formatTime.html">formatTime</a></li>
+        <li><a href="../constants_general/getHighest.html">getHighest</a></li>
+        <li><a href="../constants_general/getLowest.html">getLowest</a></li>
+        <li><a href="../constants_general/isGlucoseValueNormal.html">isGlucoseValueNormal</a></li>
+        <li><a href="../constants_general/timeOfDayFromApiStringNoSeconds.html">timeOfDayFromApiStringNoSeconds</a></li>
+        <li><a href="../constants_general/timeOfDayFromApiStringWithSeconds.html">timeOfDayFromApiStringWithSeconds</a></li>
+
+
+
+</ol>
+
+  </div><!--/sidebar-offcanvas-right-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    glucose_guardian
+      1.0.0+3
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

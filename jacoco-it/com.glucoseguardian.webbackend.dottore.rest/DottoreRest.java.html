@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DottoreRest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.dottore.rest</a> &gt; <span class="el_source">DottoreRest.java</span></div><h1>DottoreRest.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.dottore.rest;
+
+import com.glucoseguardian.webbackend.configuration.Utils;
+import com.glucoseguardian.webbackend.dottore.service.AbstractDottoreService;
+import com.glucoseguardian.webbackend.dottore.service.DottoreServiceInterface;
+import com.glucoseguardian.webbackend.exceptions.DuplicatedEntityException;
+import com.glucoseguardian.webbackend.exceptions.UserNotFoundException;
+import com.glucoseguardian.webbackend.storage.dto.CodiceFiscaleDto;
+import com.glucoseguardian.webbackend.storage.dto.DottoreDto;
+import com.glucoseguardian.webbackend.storage.dto.ListDto;
+import com.glucoseguardian.webbackend.storage.dto.RisultatoDto;
+import com.glucoseguardian.webbackend.storage.entity.Utente;
+import java.util.concurrent.CompletableFuture;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * Rest controller che si occupa di esporre i servizi del package dottore.
+ */
+@RestController
+@RequestMapping(&quot;dottore&quot;)
+<span class="fc" id="L32">public class DottoreRest {</span>
+
+  @Autowired
+  private AbstractDottoreService dottoreService;
+  @Autowired
+  private Utils utils;
+
+  /**
+   * Metodo che si occupa delle richieste post all'endpoint /get.
+   */
+  @PostMapping(value = &quot;/get&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+  public @ResponseBody CompletableFuture&lt;ResponseEntity&lt;RisultatoDto&gt;&gt; getDottore(
+      @RequestBody CodiceFiscaleDto codiceFiscaleDottore) throws Exception {
+
+
+    ResponseEntity&lt;RisultatoDto&gt; response;
+<span class="nc" id="L48">    codiceFiscaleDottore.validate();</span>
+    try {
+<span class="nc" id="L50">      DottoreDto dto = getService().findByCodiceFiscale(codiceFiscaleDottore.getCodiceFiscale());</span>
+<span class="nc" id="L51">      response = new ResponseEntity&lt;&gt;(dto, HttpStatus.OK);</span>
+<span class="nc" id="L52">    } catch (UserNotFoundException | AccessDeniedException ex) {</span>
+      // These exceptions are managed by CustomExceptionHandler
+<span class="nc" id="L54">      throw ex;</span>
+<span class="nc" id="L55">    } catch (Exception ex) {</span>
+<span class="nc" id="L56">      response = new ResponseEntity&lt;&gt;(new RisultatoDto(&quot;Errore durante la ricerca del paziente&quot;),</span>
+            HttpStatus.INTERNAL_SERVER_ERROR);
+<span class="nc" id="L58">    }</span>
+<span class="nc" id="L59">    return CompletableFuture.completedFuture(response);</span>
+  }
+  /**
+   * Metodo che si occupa delle richieste post all'endpoint /getByStato.
+   */
+
+  @PostMapping(value = &quot;/getByStato&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+  public @ResponseBody CompletableFuture&lt;ResponseEntity&lt;RisultatoDto&gt;&gt; getByStato(
+      @RequestBody DottoreDto dottore) {
+
+
+    ResponseEntity&lt;RisultatoDto&gt; response;
+<span class="nc" id="L71">    dottore.validateStato();</span>
+    try {
+<span class="nc" id="L73">      ListDto&lt;DottoreDto&gt; dto = getService().findByStato(dottore.getStato());</span>
+<span class="nc" id="L74">      response = new ResponseEntity&lt;&gt;(dto, HttpStatus.OK);</span>
+<span class="nc" id="L75">    } catch (AccessDeniedException ex) {</span>
+      // These exceptions are managed by CustomExceptionHandler
+<span class="nc" id="L77">      throw ex;</span>
+<span class="nc" id="L78">    } catch (Exception ex) {</span>
+<span class="nc" id="L79">      response = new ResponseEntity&lt;&gt;(new RisultatoDto(&quot;Errore durante il recupero dei dottori&quot;),</span>
+          HttpStatus.INTERNAL_SERVER_ERROR);
+<span class="nc" id="L81">    }</span>
+
+<span class="nc" id="L83">    return CompletableFuture.completedFuture(response);</span>
+  }
+
+  /**
+   * Metodo che si occupa delle richieste post all'endpoint /getByPaziente.
+   */
+  @PostMapping(value = &quot;/getByPaziente&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+  public @ResponseBody CompletableFuture&lt;ResponseEntity&lt;RisultatoDto&gt;&gt; getByPaziente(
+      @RequestBody CodiceFiscaleDto codiceFiscalePaziente) throws Exception {
+
+
+    ResponseEntity&lt;RisultatoDto&gt; response;
+<span class="nc" id="L95">    codiceFiscalePaziente.validate();</span>
+    try {
+<span class="nc" id="L97">      DottoreDto dto = getService().findByPaziente(codiceFiscalePaziente.getCodiceFiscale());</span>
+<span class="nc" id="L98">      response = new ResponseEntity&lt;&gt;(dto, HttpStatus.OK);</span>
+<span class="nc" id="L99">    } catch (UserNotFoundException | AccessDeniedException ex) {</span>
+      // These exceptions are managed by CustomExceptionHandler
+<span class="nc" id="L101">      throw ex;</span>
+<span class="nc" id="L102">    } catch (Exception ex) {</span>
+<span class="nc" id="L103">      response = new ResponseEntity&lt;&gt;(new RisultatoDto(&quot;Errore durante il recupero dei dottori&quot;),</span>
+          HttpStatus.INTERNAL_SERVER_ERROR);
+<span class="nc" id="L105">    }</span>
+
+<span class="nc" id="L107">    return CompletableFuture.completedFuture(response);</span>
+  }
+
+  /**
+   * Metodo che si occupa delle richieste post all'endpoint /getAll.
+   */
+  @GetMapping(value = &quot;/getAll&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+  public @ResponseBody CompletableFuture&lt;ResponseEntity&lt;RisultatoDto&gt;&gt; getAll() {
+
+
+    ResponseEntity&lt;RisultatoDto&gt; response;
+
+    try {
+<span class="nc" id="L120">      ListDto&lt;DottoreDto&gt; dto = getService().findAll();</span>
+<span class="nc" id="L121">      response = new ResponseEntity&lt;&gt;(dto, HttpStatus.OK);</span>
+<span class="nc" id="L122">    } catch (AccessDeniedException ex) {</span>
+      // These exceptions are managed by CustomExceptionHandler
+<span class="nc" id="L124">      throw ex;</span>
+<span class="nc" id="L125">    } catch (Exception ex) {</span>
+<span class="nc" id="L126">      response = new ResponseEntity&lt;&gt;(new RisultatoDto(&quot;Errore durante il recupero dei dottori&quot;),</span>
+          HttpStatus.INTERNAL_SERVER_ERROR);
+<span class="nc" id="L128">    }</span>
+
+<span class="nc" id="L130">    return CompletableFuture.completedFuture(response);</span>
+  }
+
+  /**
+   * Metodo che si occupa delle richieste post all'endpoint /updateStato.
+   */
+  @PostMapping(value = &quot;/updateStato&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+  public @ResponseBody CompletableFuture&lt;ResponseEntity&lt;RisultatoDto&gt;&gt; updateStato(
+      @RequestBody DottoreDto dottore) throws UserNotFoundException {
+
+
+    ResponseEntity&lt;RisultatoDto&gt; response;
+<span class="fc" id="L142">    dottore.validateStato();</span>
+<span class="fc" id="L143">    dottore.validateCodiceFiscale();</span>
+<span class="fc" id="L144">    boolean result = false;</span>
+    try {
+<span class="fc" id="L146">      Utente admin = (Utente) getAuthentication().getPrincipal();</span>
+<span class="fc" id="L147">      result = getService().updateStato(dottore.getCodiceFiscale(), dottore.getStato(),</span>
+<span class="fc" id="L148">          admin.getCodiceFiscale());</span>
+<span class="nc" id="L149">    } catch (AccessDeniedException | UserNotFoundException ex) {</span>
+      // These exceptions are managed by CustomExceptionHandler
+<span class="nc" id="L151">      throw ex;</span>
+<span class="nc" id="L152">    } catch (ClassCastException ex) {</span>
+<span class="nc" id="L153">      throw new AccessDeniedException(&quot;Utente non autorizzato&quot;);</span>
+<span class="nc" id="L154">    } catch (Exception ex) {</span>
+<span class="fc" id="L155">    }</span>
+
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">    if (result) {</span>
+<span class="fc" id="L158">      response = new ResponseEntity&lt;&gt;(new RisultatoDto(&quot;Modifica effettuata con successo&quot;),</span>
+          HttpStatus.OK);
+    } else {
+<span class="nc" id="L161">      response = new ResponseEntity&lt;&gt;(</span>
+          new RisultatoDto(&quot;Errore durante il salvataggio della modifica&quot;),
+          HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+<span class="fc" id="L167">    return CompletableFuture.completedFuture(response);</span>
+  }
+
+  /**
+   * Metodo che si occupa delle richieste post all'endpoint /save.
+   */
+  @PostMapping(value = &quot;/save&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+  public @ResponseBody CompletableFuture&lt;ResponseEntity&lt;RisultatoDto&gt;&gt; saveDottore(
+      @RequestBody DottoreDto dottore) throws DuplicatedEntityException {
+
+<span class="fc" id="L177">    dottore.validateDottore();</span>
+<span class="fc" id="L178">    boolean result = false;</span>
+    try {
+<span class="fc" id="L180">      result = getService().save(dottore);</span>
+<span class="fc" id="L181">    } catch (DuplicatedEntityException ex) {</span>
+<span class="fc" id="L182">      throw ex;</span>
+<span class="nc" id="L183">    } catch (Exception ex) {</span>
+<span class="fc" id="L184">    }</span>
+
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">    if (result) {</span>
+<span class="fc" id="L187">      return CompletableFuture.completedFuture(</span>
+          new ResponseEntity&lt;&gt;(
+              new RisultatoDto(&quot;Dottore registrato correttamente&quot;),
+              HttpStatus.OK
+          )
+      );
+    } else {
+<span class="nc" id="L194">      return CompletableFuture.completedFuture(</span>
+          new ResponseEntity&lt;&gt;(new RisultatoDto(&quot;Errore durante l'inserimento del dottore&quot;),
+              HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+  }
+
+  private DottoreServiceInterface getService() {
+<span class="fc" id="L201">    return dottoreService.getImplementation();</span>
+  }
+
+  private Authentication getAuthentication() {
+<span class="fc" id="L205">    return utils.getAuthentication();</span>
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

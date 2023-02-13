@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Terapia.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webbackend</a> &gt; <a href="index.source.html" class="el_package">com.glucoseguardian.webbackend.storage.entity</a> &gt; <span class="el_source">Terapia.java</span></div><h1>Terapia.java</h1><pre class="source lang-java linenums">package com.glucoseguardian.webbackend.storage.entity;
+
+import jakarta.annotation.Nullable;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import java.io.Serializable;
+import java.sql.Date;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Questa classe rappresenta l'entità Terapia.
+ */
+@Entity
+@Table(uniqueConstraints = {
+    @UniqueConstraint(
+        columnNames = {&quot;paziente&quot;})
+})
+<span class="fc" id="L29">public class Terapia implements Serializable {</span>
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+  @Nullable
+  private Date dataInizio;
+
+  @OneToMany(mappedBy = &quot;terapia&quot;, fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List&lt;AssunzioneFarmaco&gt; assunzioneFarmacos;
+
+  @ManyToOne
+  @JoinColumn(name = &quot;dottore&quot;)
+  private Dottore dottore;
+
+  @OneToOne
+  @JoinColumn(name = &quot;paziente&quot;)
+  private Paziente paziente;
+
+
+  public long getId() {
+<span class="nc" id="L51">    return id;</span>
+  }
+
+  public void setId(long id) {
+<span class="nc" id="L55">    this.id = id;</span>
+<span class="nc" id="L56">  }</span>
+
+  public Date getDataInizio() {
+<span class="nc" id="L59">    return dataInizio;</span>
+  }
+
+  public void setDataInizio(Date dataInizio) {
+<span class="fc" id="L63">    this.dataInizio = dataInizio;</span>
+<span class="fc" id="L64">  }</span>
+
+  public List&lt;AssunzioneFarmaco&gt; getAssunzioneFarmacos() {
+<span class="fc" id="L67">    return assunzioneFarmacos;</span>
+  }
+
+  public void setAssunzioneFarmacos(List&lt;AssunzioneFarmaco&gt; assunzioneFarmacos) {
+<span class="fc" id="L71">    this.assunzioneFarmacos = assunzioneFarmacos;</span>
+<span class="fc" id="L72">  }</span>
+
+  public Dottore getDottore() {
+<span class="nc" id="L75">    return dottore;</span>
+  }
+
+  public void setDottore(Dottore dottore) {
+<span class="fc" id="L79">    this.dottore = dottore;</span>
+<span class="fc" id="L80">  }</span>
+
+  public Paziente getPaziente() {
+<span class="nc" id="L83">    return paziente;</span>
+  }
+
+  public void setPaziente(Paziente paziente) {
+<span class="fc" id="L87">    this.paziente = paziente;</span>
+<span class="fc" id="L88">  }</span>
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L92" title="All 2 branches missed.">    if (o instanceof Terapia) {</span>
+<span class="nc" id="L93">      return Objects.equals(id, ((Terapia) o).id);</span>
+    }
+<span class="nc" id="L95">    return false;</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L100">    return Objects.hash(id);</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="nc" id="L105">    return &quot;Terapia{&quot; + &quot;id=&quot; + id + &quot;, dataInizio=&quot; + dataInizio + &quot;, pazientes=&quot; + paziente</span>
+        + &quot;, assunzioneFarmacos=&quot; + assunzioneFarmacos + &quot;, dottore=&quot; + dottore + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
