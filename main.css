@@ -20,16 +20,17 @@ body {
 }
 
 .card:hover {
-    /*box-shadow: 0 5px 22px 0 rgba(0,0,0,.25);*/
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     margin-bottom: 54px;
 }
 
 .image {
     height: 200px;
-    opacity: .7;
-    overflow: hidden;
+    opacity: .6;
     transition: all .2s ease-in-out;
+    padding: 10px;
+    display: flex;
+    background: #f8f8f8;
 }
 
 .image:hover,
@@ -67,9 +68,7 @@ body {
 
 .fab:hover {
     background: #549D3C;
-    cursor: pointer;
     -ms-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
 }
 
@@ -78,3 +77,35 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
+
+header {
+    box-sizing: border-box;
+    background-color: #EF9A3E;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+footer {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #EF9A3E;
+    color: white;
+    padding: 20px;
+}
+
+.image img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+a {
+    color: currentColor;
+}
+
